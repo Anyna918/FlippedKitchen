@@ -10,7 +10,7 @@
 
 <script>
   import { ref } from 'vue'; // 导入 ref
-  import { testApi } from '@/api/test.js';
+  import { testApi } from '@/api/test-api.js';
   import { debounce, throttle } from '@/utils/index.js';
 
   export default {

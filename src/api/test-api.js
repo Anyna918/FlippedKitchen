@@ -4,7 +4,7 @@ import request from '@/utils/request.js'
 export const testApi = {
 	getTestInfo(){
 		return request({
-			url:"",
+			url:"/api",
 			method:"GET",
 			data:{},
 			header:{}
