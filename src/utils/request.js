@@ -1,5 +1,6 @@
 // 基础url（测试接口)
-const baseUrl = "http://jsonplaceholder.typicode.com/posts";
+// const baseUrl = "http://jsonplaceholder.typicode.com/posts";
+const baseUrl = "http://localhost:7217";
 
 // 请求拦截器
 const beforeRequest =() =>{
@@ -17,10 +18,12 @@ const request = (obj) => {
 
 	beforeRequest(); // 调用请求拦截器
 
-	const url = obj.url || '' + baseUrl;
+	// const url = obj.url || '' + baseUrl;
+	const url = baseUrl + obj.url || '';
 	const method = obj.method || 'GET';
 	const data = obj.data || {};
 	const header = obj.header || {};
+	
 
 	return new Promise((resolve, reject) => {
 		uni.request({

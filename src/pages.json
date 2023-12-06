@@ -13,7 +13,32 @@
 				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path": "pages/example/test",
+			"style" :
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}	
+		},
+		{
+			"path": "pages/example/test2",
+			"style" :
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}	
+		},		
+		{
+			"path": "pages/FoodList/FoodListTest",
+			"style" :
+			{
+				"navigationBarTitleText" : "this is foodlist",
+				"enablePullDownRefresh" : false
+			}
 		}
+
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

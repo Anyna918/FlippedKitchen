@@ -11,3 +11,15 @@ export const testApi = {
 		});
 	}
 }
+
+// 接口示例
+export const testUser = {
+	getTestInfo(){
+		return request({
+			url:"/Test/getUsers",
+			method:"GET",
+			data:{},
+			header:{}
+		});
+	}
+}

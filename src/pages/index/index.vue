@@ -26,7 +26,7 @@ export default {
   methods: {
 	  goToExample(){
 		  uni.navigateTo({
-		  	url: '/pages/example/example'
+		  	url: '/pages/FoodList/FoodListTest'
 		  })
 	  }
   },

@@ -2,7 +2,7 @@
   <view class="content">
     <p>这是一个示例页面</p>
     <button @click='goBack'>返回上个页面</button>
-    <button @click="apiTest">接口测试</button>
+    <button @click="goToexa()">接口测试</button>
     <button @click="login">防抖</button>
     <button @click="handIn">节流</button>
   </view>
@@ -37,7 +37,15 @@
         login,
         handIn 
       };
-    }
+    },
+	
+	methods: {
+		  goToexa(){
+			  uni.navigateTo({
+			  	url: 'test2'
+			  })
+		  }
+	},
   };
 </script>
 
