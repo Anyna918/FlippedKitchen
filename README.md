@@ -69,3 +69,8 @@ Ps：不要随便引入组件库或其他包，可能引发冲突，提前进行
 ### pages.json
 
 路由配置文件，新的页面需要在这里进行路由配置
+
+### 组件uview的安装
+[教程链接](https://uiadmin.net/uview-plus/components/install.html)
+
+
