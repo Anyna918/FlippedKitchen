@@ -37,7 +37,21 @@
 			}
 		},
 		{
+			"path": "pages/example/test3",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/FoodList/FoodListTest",
+			"style": {
+				"navigationBarTitleText": "this is foodlist",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/FoodList/FoodDetails",
 			"style": {
 				"navigationBarTitleText": "this is foodlist",
 				"enablePullDownRefresh": false
