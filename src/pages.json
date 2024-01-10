@@ -42,6 +42,14 @@
 				"navigationBarTitleText": "this is foodlist",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/KitchenFinance/KitchenFinance",
+			"style" : 
+			{
+				"navigationBarTitleText" : "厨房财务",
+				"enablePullDownRefresh" : false
+			}
 		}
 
 	],

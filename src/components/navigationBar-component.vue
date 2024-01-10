@@ -44,6 +44,9 @@ export default{
 		selectTab(tab) {
 			this.currentTab = tab;
 			console.log(this.currentTab);
+			uni.navigateTo({
+				url:'/pages/KitchenFinance/KitchenFinance'
+			});
 		}
 	},
 	computed: {
@@ -73,8 +76,10 @@ export default{
 	  position: fixed;
 	  bottom: 0;
 	  width: 100%;
-	  background-color: #f0f0f0;
-	  border-top: 1px solid #ccc;
+	  background-color: #010101;
+	  //border-top: 1rpx solid #ccc;
+	  padding-top: 10rpx;
+	  padding-bottom: 10rpx;
 	}
 	
 	.nav-item {
@@ -83,17 +88,17 @@ export default{
 	  align-items: center;
 	  justify-content: center;
 	  color: #333;
-	  padding: 10px;
-	  font-size: 20px;
+	  padding: 10rpx;
+	  font-size: 20rpx;
 	  cursor: pointer;
 	}
 	
 	.nav-item.active {
-	  color: #007bff; /* 激活状态的颜色 */
+	  color: #FFFFFF; /* 激活状态的颜色 */
 	}
 	
 	.image_navigationVar{
-		width: 30px; 
-		height: 30px 
+		width: 45rpx; 
+		height: 45rpx 
 	}
 </style>
