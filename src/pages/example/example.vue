@@ -41,8 +41,9 @@
 	
 	methods: {
 		  goToexa(){
+			  let data = 'hello';
 			  uni.navigateTo({
-			  	url: 'test2'
+			  	url: '/pages/FoodList/FoodDetails?data=' + data
 			  })
 		  }
 	},
