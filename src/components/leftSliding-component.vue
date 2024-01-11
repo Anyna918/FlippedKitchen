@@ -59,7 +59,7 @@
 
 					//起始位置减去 实时的滑动的距离，得到手指实时偏移距离
 					this.disX = this.startX - this.moveX;
-					console.log(this.disX)
+					console.log('disx ', this.disX)
 					// 如果是向右滑动或者不滑动，不改变滑块的位置
 					if (this.disX < 0 || this.disX == 0) {
 						this.deleteSlider = "transform:translateX(0px)";
@@ -83,7 +83,7 @@
 					let endX = ev.changedTouches[0].clientX;
 
 					this.disX = this.startX - endX;
-					console.log(this.disX)
+					console.log('disxend ', this.disX)
 					//如果距离小于删除按钮一半,强行回到起点
 
 					if ((this.disX * 5) < (wd / 2)) {
@@ -116,6 +116,8 @@
 			z-index: 2;
 			//    设置过渡动画
 			transition: 0.3s;
+			border-radius: 7px;
+			padding-top: 5px;
 
 		}
 

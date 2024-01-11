@@ -1,5 +1,5 @@
 <template>
-	<h1>this is FoodList test</h1> <br>
+	<h1 class="title">食材列表</h1>
 	<u-tabs :list="list_navigation" @click="click_navigation"></u-tabs>
 	<!-- <h1>this is abandon</h1> -->
 	<search :placeholder="SearchPlaceholder" @SearchMessage="searchMessage"></search>
@@ -54,9 +54,6 @@
 						name: "肉类"
 					},
 					{
-						name: "主食"
-					},
-					{
 						name: "水果"
 					},
 					{
@@ -66,14 +63,19 @@
 						name: "调料"
 					},
 					{
-						name: "豆类"
-					},
-					{
-						name: "油"
+						name: "主食"
 					},
 					{
 						name: "其他"
-					}
+					},
+
+					// {
+					// 	name: "豆类"
+					// },
+					// {
+					// 	name: "油"
+					// },
+
 				],
 				name_navigation: '所有',
 				index_navigation: 0,
@@ -147,4 +149,12 @@
 </script>
 
 <style>
+	body {
+		background: linear-gradient(to bottom, #88BFFF 0%, #FFFFFF 100%);
+	}
+	.title{
+		margin-top: 20rpx;
+		margin-left: 20rpx;
+	}
+	
 </style>
