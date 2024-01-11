@@ -5,6 +5,7 @@
       <text class="title">{{ title }}</text>
     </view>
 	<button @click="goToExample">页面跳转</button>
+	
 	<view>{{counter.doubleCount}}</view>
   </view>
 </template>
@@ -13,12 +14,19 @@
 import { ref } from 'vue'
 import { useCounterStore } from '@/store/user'
 export default {
+	data(){
+		return{
+			
+		}
+	},
   setup(){
 	const counter = useCounterStore();
 	const title = ref("hello");
+	const show=ref(false);
 	return{
 		title,
-		counter
+		counter,
+		show
 	}
   },
   
@@ -28,7 +36,8 @@ export default {
 		  uni.navigateTo({
 		  	url: '/pages/FoodStorage/FoodStorage'
 		  })
-	  }
+	  },
+	  
   },
 }
 </script>
@@ -58,5 +67,8 @@ export default {
 .title {
   font-size: 36rpx;
   color: #8f8f94;
+}
+.u-picker {
+  border: 1px solid red; /* 临时样式，用于检测 */
 }
 </style>

@@ -42,6 +42,39 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+<<<<<<< HEAD
+=======
+		},
+		{
+			"path": "pages/example/test3",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/FoodList/FoodListTest",
+			"style": {
+				"navigationBarTitleText": "this is foodlist",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path" : "pages/KitchenFinance/KitchenFinance",
+			"style" : 
+			{
+				"navigationBarTitleText" : "厨房财务",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path": "pages/FoodList/FoodDetails",
+			"style": 
+			{
+				"navigationBarTitleText": "this is foodlist",
+				"enablePullDownRefresh": false
+			}
+>>>>>>> 5e7ec18770d24ed59471cb42572e45a8c7827ff1
 		}
 	],
 	"globalStyle": {
