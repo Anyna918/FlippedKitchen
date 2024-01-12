@@ -1,4 +1,21 @@
 <template>
+	<!-- <u-swipe-action style="width:100%;background-color: white;">
+		<u-swipe-action-item :options="options1">
+			<view :class="['content_bill', borderRadiusClass]">
+				<view class="tag_container">
+					<p class="text_tag">{{bill.tag}}</p>
+					<p class="text_comment">{{bill.comment}}</p>
+				</view>
+				<view class="right_container">
+					<view class="tag_container" style="align-items: flex-end;">
+						<p class="text_tag">-￥{{bill.amount.toFixed(2)}}</p>
+						<p class="text_comment">{{bill.date}}</p>
+					</view>
+					<image src="../static/KitchenFinance/edit.png" class="image_edit" @click="editBill"></image>
+				</view>
+			</view>
+		</u-swipe-action-item>
+	</u-swipe-action> -->
 	<view :class="['content_bill', borderRadiusClass]">
 		<view class="tag_container">
 			<p class="text_tag">{{bill.tag}}</p>
@@ -15,8 +32,12 @@
 </template>
 
 <script>
+	import leftSliding from "@/components/leftSliding-component.vue"
 	export default {
 		name: "kitchenBill",
+		components: {
+			leftSliding
+		},
 		props: {
 			bill: {
 				type: Object,
@@ -34,31 +55,33 @@
 				type: Boolean,
 				default: false
 			},
-			index:{
-				type:Number,
-				default:0
+			index: {
+				type: Number,
+				default: 0
 			}
 		},
 		computed: {
 			borderRadiusClass() {
-				if(this.isOne){
+				if (this.isOne) {
 					return 'only-child';
 				}
 				if (this.isFirst) {
 					return 'first-child';
 				} else if (this.isLast) {
 					return 'last-child';
-				} 
+				}
 				return '';
 			}
 		},
 		data() {
 			return {
-
+				options1: [{
+					text: '删除'
+				}]
 			};
 		},
-		methods:{
-			editBill(){
+		methods: {
+			editBill() {
 				this.$emit('edit-bill', this.index);
 			}
 		}
@@ -95,15 +118,16 @@
 		border-radius: 40rpx;
 		/* 全部圆角更大 */
 	}
-	.right_container{
-		display:flex;
+
+	.right_container {
+		display: flex;
 		flex-direction: row;
 		align-items: center;
 	}
 
 	.tag_container {
 		//margin-left:30rpx;
-		display:flex;
+		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: flex-start;
@@ -117,10 +141,11 @@
 	.text_comment {
 		font-size: 20rpx;
 		font-weight: normal;
-		color:#8A8A8A;
+		color: #8A8A8A;
 	}
-	.image_edit{
-		width:70rpx;
-		height:70rpx;
+
+	.image_edit {
+		width: 70rpx;
+		height: 70rpx;
 	}
 </style>
