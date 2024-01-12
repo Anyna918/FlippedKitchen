@@ -12,7 +12,7 @@
 	{
 		"path": "pages/FoodStorage/FoodStorage",
 		"style": {
-			"navigationBarTitleText": "this is foodstorage",
+			"navigationBarTitleText": "食材储备",
 			"enablePullDownRefresh": false
 		}
 	},
@@ -94,6 +94,14 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "财务统计",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/Shopping/Shopping",
+			"style" : 
+			{
+				"navigationBarTitleText" : "购物清单",
 				"enablePullDownRefresh" : false
 			}
 		}

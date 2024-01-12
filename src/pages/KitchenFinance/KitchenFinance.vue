@@ -56,6 +56,7 @@
 		</u-popup>
 		<circleButton backColor="#FFCF48" @click="addBill"></circleButton>
 		<navigationBar></navigationBar>
+		<u-toast ref="uToast"></u-toast>
 	</view>
 </template>
 
@@ -106,9 +107,15 @@
 				dataAmount: 0.00,
 				tagValue: '',
 				commentValue: '',
-				isSave:false,
+				isSave: false,
 				currentIndex: -1,
-				confirmSave:false
+				confirmSave: false,
+				successToast: {
+					type: 'success',
+					title: '成功主题(带图标)',
+					message: "添加账单成功",
+					iconUrl: 'https://cdn.uviewui.com/uview/demo/toast/success.png'
+				},
 			}
 		},
 		methods: {
@@ -131,23 +138,24 @@
 			},
 			close(e) {
 				this.showPopup = false
-				this.confirmSave=e;
+				this.confirmSave = e;
 				console.log(this.currentIndex);
-				let index=this.currentIndex;
+				let index = this.currentIndex;
 				// 处理保存
-				if(this.isSave&&this.inputAmount != '0'&&this.confirmSave&& this.tagValue != ''){
-					this.bills[index].amount=parseFloat(this.inputAmount);
-					this.bills[index].tag=this.tagValue;
-					this.bills[index].comment=this.commentValue;
-				}
-				else{//处理添加
-					if (this.inputAmount != '0' && this.tagValue != ''&&this.confirmSave) {
+				if (this.isSave && this.inputAmount != '0' && this.confirmSave && this.tagValue != '') {
+					console.log("进这里")
+					this.bills[index].amount = parseFloat(this.inputAmount);
+					this.bills[index].tag = this.tagValue;
+					this.bills[index].comment = this.commentValue;
+				} else { //处理添加
+					if (this.inputAmount != '0' && this.tagValue != '' && this.confirmSave) {
 						console.log("amount", this.inputAmount);
 						console.log("tag", this.tagValue);
 						console.log("comment", this.commentValue);
+						this.showToast(this.successToast);
 					}
 				}
-				this.isSave=!this.isSave;
+				this.isSave=false;
 				this.inputAmount = '0';
 				this.tagValue = '';
 				this.commentValue = '';
@@ -166,14 +174,24 @@
 				this.inputAmount = this.inputAmount.slice(0, -1);
 			},
 			handleEditBill(index) {
-				this.isSave=true;
-				this.currentIndex=index;
+				this.isSave = true;
+				this.currentIndex = index;
 				console.log('Editing bill at index:', index);
 				this.inputAmount = this.bills[index].amount.toString();
 				this.tagValue = this.bills[index].tag;
 				this.commentValue = this.bills[index].comment;
 				uni.$u.sleep().then(() => {
 					this.showPopup = !this.showPopup
+				})
+			},
+			showToast(params) {
+				this.$refs.uToast.show({
+					...params,
+					complete() {
+						params.url && uni.navigateTo({
+							url: params.url
+						})
+					}
 				})
 			}
 		}
