@@ -19,8 +19,7 @@
 					</div>
 				</u-grid-item>
 			</u-grid>
-			<FoodStorageDetail :visible.sync="detailVisible" :food-item="selectedItem" @close="handleClose">
-			</FoodStorageDetail>
+			<FoodStorageDetail :visible.sync="detailVisible" :food-item="selectedItem" @close="handleClose" />
 			<ShoppingCartPopup :visible.sync="cartPopupVisible" :shoppingLists="shoppingLists"
 				@add-to-cart="addToCart" />
 		</div>
@@ -91,7 +90,6 @@
 				cartPopupVisible: false, // 控制购物车弹窗显示
 				currentItem: null, // 当前选择的食材项
 				showAddFoodPopup: false,
-
 			};
 		},
 		methods: {
@@ -129,7 +127,6 @@
 							// 例如:
 							// this.deleteItemFromServer(itemId);
 						}
-						// 若用户点击取消，则不需要进行任何操作，弹窗自动关闭
 					}
 				});
 			},
@@ -203,7 +200,6 @@
 						inCart: selectedListIds.length > 0 ? selectedListIds : null
 					});
 				}
-
 				console.log('Updated foodItems:', this.foodItems);
 				console.log('Updated shoppingLists:', this.shoppingLists);
 			}

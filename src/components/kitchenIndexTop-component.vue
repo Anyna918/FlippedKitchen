@@ -9,25 +9,21 @@
 				<u-datetime-picker :show="show" mode="year-month" v-model="pickerValue" :maxDate="maxValue" ref="picker"
 					closeOnClickOverlay @confirm="confirm" @cancel="cancel" @change="change"
 					@close="close"></u-datetime-picker>
-				<u-line direction="col" color="#000000" :hairline=false length="70rpx"></u-line>
+				<u-line direction="col" color="#8A8A8A" :hairline=false length="70rpx"></u-line>
 			</view>
 		</view>
 		<view class="date_container">
 			<view class="select_container" style="margin-left: 0rpx;">
-				<p class="text_year" >支出</p>
+				<p class="text_year">支出</p>
 				<image src="../static/KitchenFinance/expense.png" class="image_icon"></image>
 			</view>
 			<p class="text_month" style="text-shadow:none;letter-spacing: normal;">{{expense.toFixed(2)}}</p>
 		</view>
-		<view style="margin-left: 80rpx;">
+		<view style="margin-left: 90rpx;">
 			<!-- <image src="../static/KitchenFinance/statistic.png" class="image_statistic"></image> -->
-			<u-button
-			    custom-style="font-size:30rpx;font-weight:bold"
-			    size="small"
-			    color="linear-gradient(to right, #6600CC, #d2b4de)"
-				shape="circle"
-			>统计</u-button>
-			
+			<u-button custom-style="font-size:30rpx;font-weight:bold" size="small"
+				color="linear-gradient(to right, #6600CC, #d2b4de)" shape="circle" @click="gotoStatistic">统计</u-button>
+
 		</view>
 	</view>
 </template>
@@ -40,7 +36,7 @@
 				show: false,
 				pickerValue: Number(new Date()), // 当前时间的时间戳
 				maxValue: Number(new Date()), // 当前时间的时间戳作为最大值
-				expense:123.00,
+				expense: 123.00,
 			};
 		},
 		computed: {
@@ -55,6 +51,21 @@
 				let month = date.getMonth() + 1; // +1 是因为 getMonth() 返回的月份是 0-11
 				return uni.$u.padZero(month); // 格式化为两位数的字符串
 			}
+		},
+		watch: {
+			pickerValue(newVal, oldVal) {
+				// 当 pickerValue 改变时，通知父组件
+				this.$emit('update-date', {
+					year: this.year,
+					month: this.month
+				});
+			}
+		},
+		mounted() {
+			this.$emit('update-date', {
+				year: this.year,
+				month: this.month
+			});
 		},
 		methods: {
 			buttonClick() {
@@ -81,6 +92,11 @@
 			showSelecter() {
 				this.show = true;
 				this.$refs.picker.innerValue = this.pickerValue;
+			},
+			gotoStatistic(){
+				uni.navigateTo({
+					url:'/pages/KitchenFinance/Statistic'
+				})
 			}
 		}
 	}
@@ -120,16 +136,16 @@
 		letter-spacing: 1rpx;
 		font-weight: bold;
 		margin-right: 8rpx;
-		text-shadow: 2rpx 2rpx 2rpx rgba(0, 0, 0, 0.5);
+		text-shadow: 2rpx 4rpx 2rpx rgba(0, 0, 0, 0.2);
 		/* X偏移, Y偏移, 模糊半径, 颜色 */
 	}
 
 	.image_icon {
-		margin-left:5rpx;
+		margin-left: 5rpx;
 		width: 35rpx;
 		height: 35rpx;
 	}
-	
+
 	.image_statistic {
 		width: 50rpx;
 		height: 50rpx;
