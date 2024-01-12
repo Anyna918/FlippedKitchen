@@ -2,7 +2,7 @@
 
 	<leftSliding>
 		<template v-slot:left>
-			<div class="container_card" slot="left">
+			<div class="container_card" slot="left" @click="cardClick()">
 				<image :src="ImageSrc" alt="Food Image" class="picture_card"></image>
 				<div>
 					<!-- style="margin-bottom: 20px; margin-left: 30px;" -->
@@ -26,10 +26,10 @@
 		</template>
 
 		<template v-slot:right>
-
-			<button style="height: 40px; text-align: center; color: aqua; background-color: antiquewhite;"
-				@click="">this is a button</button>
-
+			<button @click="toggleButtonColor_1"
+				:class="{ 'card_button': true, 'card_button_changed_color': colorChanged_1 }">加入购物车</button>
+			<button @click="toggleButtonColor_2"
+				:class="{ 'card_button': true, 'card_button_changed_color': colorChanged_2 }">加入存储</button>
 		</template>
 
 	</leftSliding>
@@ -51,6 +51,8 @@
 				ImageSrc: '',
 				tags: [],
 				synopsis: '',
+				colorChanged_1: false, // 初始状态
+				colorChanged_2: false, // 初始状态
 
 
 			}
@@ -72,7 +74,18 @@
 				this.tags.push('营养');
 				this.tags.push('维生素');
 				this.synopsis = '清爽蔬菜, 营养丰富'
+			},
+			cardClick() {
+				uni.navigateTo({
+					url: '/pages/FoodList/FoodDetails?data=' + this.FoodName,
 
+				})
+			},
+			toggleButtonColor_1() {
+				this.colorChanged_1 = !this.colorChanged_1; // 切换状态
+			},
+			toggleButtonColor_2() {
+				this.colorChanged_2 = !this.colorChanged_2; // 切换状态
 			}
 		},
 		created() {
@@ -129,5 +142,20 @@
 		display: flex;
 		align-items: center;
 
+	}
+
+	.card_button {
+		height: 40px;
+		color: aqua;
+		background-color: antiquewhite;
+		font-size: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.card_button_changed_color {
+		color: #F9F871;
+		background-color: #9827cb;
 	}
 </style>

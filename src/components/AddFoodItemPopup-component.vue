@@ -16,13 +16,10 @@
 			<label>保质期</label>
 			<select v-model="newItem.dateOfUse">
 				<option disabled value="">请选择食材保质期</option>
-				<option>3天</option>
-				<option>5天</option>
-				<option>7天</option>
-				<option>30天</option>
-				<option>3个月</option>
-				<option>6个月</option>
-				<option>1年</option>
+				<option>3</option>
+				<option>7</option>
+				<option>14</option>
+				<option>30</option>
 			</select>
 		</div>
 
@@ -63,7 +60,7 @@
 				newItem: {
 					name: '',
 					purchaseDate: '',
-					icon: '', // 文件上传后的路径或文件对象
+					icon: "/src/static/FoodIcon/milk.png", // 文件上传后的路径或文件对象
 					dateOfUse: '',
 					useRecord: '',
 					amount: '',
@@ -155,16 +152,11 @@
 	}
 
 	.green-button {
-		background-color: #4CAF50;
-		color: white;
+		background-color: #CFF499;
 		border: none;
 		border-radius: 5px;
 		padding: 4px 16px;
 		cursor: pointer;
 		font-size: 14px;
-	}
-
-	.green-button:hover {
-		background-color: #45a049;
 	}
 </style>
