@@ -72,6 +72,22 @@
 				"navigationBarTitleText": "this is foodlist",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/KitchenFinance/AddBill",
+			"style" : 
+			{
+				"navigationBarTitleText" : "添加账单",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/KitchenFinance/Statistic",
+			"style" : 
+			{
+				"navigationBarTitleText" : "财务统计",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {
