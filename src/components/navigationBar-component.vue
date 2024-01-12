@@ -92,9 +92,7 @@
 				else if (pathParts.at(pagesIndex + 1) === 'FoodStorage')
 					this.currentTab = '冰箱'
 			}
-
 		}
-
 	}
 </script>
 
@@ -110,6 +108,7 @@
 		//border-top: 1rpx solid #ccc;
 		padding-top: 10rpx;
 		padding-bottom: 10rpx;
+		z-index: 1;
 	}
 
 	.nav-item {

@@ -10,6 +10,7 @@
 						<div class="card-body">
 							<h3 class="item-name">{{ item.name }}</h3>
 							<p class="item-date">{{ item.purchaseDate }}  保质期:{{ item.dateOfUse }}天</p>
+							<p class="item-useRecord">{{ item.useRecord }}</p>							
 						</div>
 						<div class="card-footer">
 							<u-icon name="edit-pen" size="20" @click="editItem(item)"></u-icon>
@@ -50,47 +51,58 @@
 			return {
 				foodItems: [{
 						id: 1,
-						name: "苹果",
-						purchaseDate: "2024.01.01",
-						icon: "/src/static/logo.png",
+						name: "面包",
+						purchaseDate: "2024.01.14",
+						icon: "/src/static/FoodIcon/bread.png",
 						inCart: [],
-						dateOfUse: 10, // 保质期
+						dateOfUse: 3, // 保质期
 						useRecord: "充足", // 使用记录
-						remark: "苹果应保持干燥", // 食材备注
+						remark: "快点吃完哦", // 食材备注
 						amount: 5 // 数量
 					},
 					{
 						id: 2,
-						name: "西红柿",
-						purchaseDate: "2024.01.01",
-						icon: "/src/static/logo.png",
+						name: "葡萄",
+						purchaseDate: "2024.01.05",
+						icon: "/src/static/FoodIcon/grape.png",
 						inCart: [],
-						dateOfUse: 10, // 保质期
-						useRecord: "", // 使用记录
+						dateOfUse: 7, // 保质期
+						useRecord: "即将用尽", // 使用记录
 						remark: "阿巴阿巴", // 食材备注
-						amount: 5 // 数量
+						amount: 2 // 数量
 					},
 					{
 						id: 3,
-						name: "莴笋",
+						name: "玉米",
 						purchaseDate: "2024.01.01",
-						icon: "/src/static/logo.png",
+						icon: "/src/static/FoodIcon/popcorn.png",
 						inCart: [],
-						dateOfUse: 10, // 保质期
-						useRecord: "", // 使用记录
-						remark: "阿巴阿巴", // 食材备注
-						amount: 5 // 数量
+						dateOfUse: 30, // 保质期
+						useRecord: "充足", // 使用记录
+						remark: "这是玉米哦", // 食材备注
+						amount: 10 // 数量
 					},
 					{
-						id: 3,
-						name: "金针菇",
-						purchaseDate: "2024.01.01",
-						icon: "/src/static/logo.png",
+						id: 4,
+						name: "草莓",
+						purchaseDate: "2024.01.11",
+						icon: "/src/static/FoodIcon/strawberry.png",
 						inCart: [],
-						dateOfUse: 10, // 保质期
-						useRecord: "", // 使用记录
-						remark: "阿巴阿巴", // 食材备注
-						amount: 5 // 数量
+						dateOfUse: 3, // 保质期
+						useRecord: "即将用尽", // 使用记录
+						remark: "这是草莓哦", // 食材备注
+						amount: 2 // 数量
+					},
+					{
+						id: 5,
+						name: "西瓜",
+						purchaseDate: "2024.01.11",
+						icon: "/src/static/FoodIcon/watermelon.png",
+						inCart: [],
+						dateOfUse: 3, // 保质期
+						useRecord: "已经用尽", // 使用记录
+						remark: "和草莓一起买的哦", // 食材备注
+						amount: 1 // 数量
 					},
 				],
 				selectedItem: null,
@@ -244,6 +256,10 @@
 	
 	.u-grid-wrapper {
 		padding: 12px;
+		  height: 100%; /* 或您期望的固定高度 */
+
+		  overflow-y: scroll; /* 允许垂直滚动 */
+
 	}
 
 	.custom-card {
@@ -284,4 +300,14 @@
 		align-items: center;
 		padding-top: 10px;
 	}
+	.item-useRecord {
+	  background-color: #CFF488; /* 绿色背景 */
+	  border-radius: 30px; /* 圆角 */
+	  padding: 5px 10px; /* 内边距：垂直方向 5px, 水平方向 10px */
+	  font-size: 0.8em; /* 较小的字号 */
+	  display: inline-block; /* 让元素的大小适应内容 */
+	  margin: 0; /* 移除默认的 margin */
+margin-top: 15px;
+	}
+
 </style>

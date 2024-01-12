@@ -98,8 +98,7 @@ export default {
 }
 
 .action-buttons button {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #CFF499;
   border: none;
   border-radius: 5px;
   padding: 4px 16px;
@@ -107,7 +106,4 @@ export default {
   font-size: 14px;
 }
 
-.action-buttons button:hover {
-  background-color: #45a049;
-}
 </style>
