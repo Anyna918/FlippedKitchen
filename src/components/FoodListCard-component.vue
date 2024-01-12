@@ -7,16 +7,19 @@
 				<div>
 					<!-- style="margin-bottom: 20px; margin-left: 30px;" -->
 					<p style="font-weight: bold;">{{FoodName}}</p>
-					<div class="container_tags_card"  v-for="(tag, index) in tags" :key="index">
-						<image src="../static/tag.jpg" class="tags_card"></image>
-						<p class="tags_words_card">{{tag}}</p>
-						
-<!-- 						<image src="../static/tag.jpg" class="tags_card"></image>
+
+					<div class="tags_container">
+						<div class="container_tags_card" v-for="(tag, index) in tags" :key="index">
+							<image src="../static/tag.jpg" class="tags_card"></image>
+							<p class="tags_words_card">{{tag}}</p>
+
+							<!-- 						<image src="../static/tag.jpg" class="tags_card"></image>
 						<p class="tags_words_card">{{tags[1]}}</p>
 						<image src="../static/tag.jpg" class="tags_card"></image>
 						<p class="tags_words_card">{{tags[2]}}</p> -->
+						</div>
 					</div>
-					<p style="color: gray; font-size: 12px">{{Details}}</p>
+					<p style="color: gray; font-size: 12px">{{synopsis}}</p>
 
 				</div>
 			</div>
@@ -24,8 +27,8 @@
 
 		<template v-slot:right>
 
-			<button style="height: 40px; text-align: center; color: aqua; background-color: antiquewhite;" 
-			@click="">this is a button</button>
+			<button style="height: 40px; text-align: center; color: aqua; background-color: antiquewhite;"
+				@click="">this is a button</button>
 
 		</template>
 
@@ -47,7 +50,7 @@
 			return {
 				ImageSrc: '',
 				tags: [],
-				Details: '',
+				synopsis: '',
 
 
 			}
@@ -68,8 +71,7 @@
 				this.tags.push('蔬菜');
 				this.tags.push('营养');
 				this.tags.push('维生素');
-				this.Details = '清爽蔬菜, 营养丰富'
-
+				this.synopsis = '清爽蔬菜, 营养丰富'
 
 			}
 		},
@@ -83,7 +85,7 @@
 	.container_card {
 		display: flex;
 		align-items: center;
-		margin-left: 5%;
+		margin-left: 3%;
 		/* margin-right: 6%; */
 		margin-bottom: 7px;
 		height: 70px;
@@ -121,5 +123,11 @@
 
 	.tags_words_card {
 		margin-right: 5px;
+	}
+
+	.tags_container {
+		display: flex;
+		align-items: center;
+
 	}
 </style>
