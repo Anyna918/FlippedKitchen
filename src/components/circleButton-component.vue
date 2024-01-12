@@ -33,7 +33,7 @@
 		height:100rpx;
 		background-image: url('../static/KitchenFinance/button-add.png');
 		background-size: cover;
-		z-index: 1;
+		z-index: 100;
 	}
 
 </style>
