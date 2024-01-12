@@ -53,7 +53,7 @@
 		{
 			"path": "pages/FoodList/FoodListTest",
 			"style": {
-				"navigationBarTitleText": "this is foodlist",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -67,6 +67,14 @@
 		},
 		{
 			"path": "pages/FoodList/FoodDetails",
+			"style": 
+			{
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/Login/Login",
 			"style": 
 			{
 				"navigationBarTitleText": "this is foodlist",

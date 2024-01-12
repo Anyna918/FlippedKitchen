@@ -36,9 +36,6 @@
 			search,
 			FoodListCard,
 			leftSliding,
-
-
-
 		},
 		data() {
 			return {
