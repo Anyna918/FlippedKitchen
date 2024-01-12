@@ -1,10 +1,60 @@
 <template>
 	<view class="content">
-		<kitchenIndexTop style="margin-top: 60rpx;"></kitchenIndexTop>
+		<kitchenIndexTop style="margin-top: 60rpx;" @update-date="handleUpdateDate"></kitchenIndexTop>
+		<view class="context_container">
+			<view class="nodata_container" v-show="!showBill">
+				<image src="../../static/KitchenFinance/nodata.png" class="image_nodata"></image>
+				<p class="text_nodata">当前月份没有账单...</p>
+			</view>
+			<view v-show="showBill" class="data_container">
+				<kitchenBill v-for="(bill, index) in bills" :key="index" :bill="bill" :isFirst="index === 0"
+					:isLast="index === bills.length - 1" :isOne="bills.length===1" :index="index"
+					@edit-bill="handleEditBill"></kitchenBill>
+			</view>
+		</view>
+		<view style="height: 240rpx; "></view>
+		<u-popup :safeAreaInsetBottom="true" :safeAreaInsetTop="true" mode="bottom" :show="showPopup" :round="10"
+			@close="close" @open="open">
+			<view class="u-popup-slot">
+				<view class="button_popup">
+					<p style="margin-left: 30rpx;font-weight: bold;" @click="close(false)">取消</p>
+					<p style="margin-right: 30rpx;font-weight: bold;" @click="close(true)" v-if="!isSave">添加</p>
+					<p style="margin-right: 30rpx;font-weight: bold;" @click="close(true)" v-if="isSave">保存</p>
+				</view>
+				<view class="input_container">
+					<view class="taginput_container">
+						<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 15rpx;">
+							<image src="../../static/KitchenFinance/tag.png"
+								style="width:30rpx;height:30rpx;margin-right: 5rpx;"></image>
+							<p style="font-size: 35rpx;font-weight: bold;margin-right: 15rpx;">标签</p>
+							<up-input placeholder="输入标签" border="bottom" v-model="tagValue" fontSize="30rpx"></up-input>
+						</view>
+						<view class="tag_container">
+							<view v-for="(tag,index) in customTags" :key="index" class="tag">
+								<p style="font-size: 20rpx;">{{tag}}</p>
+							</view>
+						</view>
+					</view>
+					<view class="taginput_container">
+						<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 15rpx;">
+							<image src="../../static/KitchenFinance/comment.png"
+								style="width:35rpx;height:35rpx;margin-right: 5rpx;"></image>
+							<p style="font-size: 35rpx;font-weight: bold;margin-right: 15rpx;">备注</p>
+						</view>
+						<u--textarea v-model="commentValue" placeholder="请输入备注" height=20></u--textarea>
+					</view>
+				</view>
+				<view style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;">
+					<p style="font-size: 55rpx;font-weight: bold;margin-top: 10rpx;">￥{{inputAmount}}</p>
+				</view>
+				<view class="input_number">
+					<u-keyboard mode="number" :show="showKeyboard" :tooltip="showTitle" :overlay="showTitle"
+						@change="change" @backspace="backspace"></u-keyboard>
+				</view>
 
-		
-		
-		<circleButton backColor="#FFCF48"></circleButton>
+			</view>
+		</u-popup>
+		<circleButton backColor="#FFCF48" @click="addBill"></circleButton>
 		<navigationBar></navigationBar>
 	</view>
 </template>
@@ -13,24 +63,119 @@
 	import circleButton from '@/components/circleButton-component.vue'
 	import navigationBar from "@/components/navigationBar-component.vue"
 	import kitchenIndexTop from "@/components/kitchenIndexTop-component.vue"
+	import kitchenBill from "@/components/kitchenBill-component.vue"
 	export default {
 		components: {
 			circleButton,
 			navigationBar,
-			kitchenIndexTop
+			kitchenIndexTop,
+			kitchenBill,
+		},
+		computed: {
+			// 计算属性：年份
+			showBill() {
+				return (this.bills.length > 0);
+			},
 		},
 		data() {
 			return {
-
-				
+				bills: [{
+						tag: '餐饮',
+						comment: '午餐',
+						amount: 35.00,
+						date: '2024-01-15'
+					},
+					{
+						tag: '交通',
+						comment: '地铁费',
+						amount: 10.00,
+						date: '2024-01-16'
+					},
+					{
+						tag: '购物',
+						comment: '书籍购买',
+						amount: 80.00,
+						date: '2024-01-17'
+					}
+				],
+				customTags: ["日常采买", "节日囤货"],
+				showPopup: false,
+				showKeyboard: true,
+				showTitle: false,
+				inputAmount: '0',
+				dataAmount: 0.00,
+				tagValue: '',
+				commentValue: '',
+				isSave:false,
+				currentIndex: -1,
+				confirmSave:false
 			}
 		},
 		methods: {
-			buttonClick() {
-				console.log("点击")
-				this.show = true;
+			handleUpdateDate(data) {
+				console.log('Received year:', data.year);
+				console.log('Received month:', data.month);
+				// 进行进一步的处理
 			},
-			
+			addBill() {
+				console.log("添加");
+				/* uni.navigateTo({
+					url:"/pages/KitchenFinance/AddBill"
+				}) */
+				uni.$u.sleep().then(() => {
+					this.showPopup = !this.showPopup
+				})
+			},
+			open() {
+				// console.log('open');
+			},
+			close(e) {
+				this.showPopup = false
+				this.confirmSave=e;
+				console.log(this.currentIndex);
+				let index=this.currentIndex;
+				// 处理保存
+				if(this.isSave&&this.inputAmount != '0'&&this.confirmSave&& this.tagValue != ''){
+					this.bills[index].amount=parseFloat(this.inputAmount);
+					this.bills[index].tag=this.tagValue;
+					this.bills[index].comment=this.commentValue;
+				}
+				else{//处理添加
+					if (this.inputAmount != '0' && this.tagValue != ''&&this.confirmSave) {
+						console.log("amount", this.inputAmount);
+						console.log("tag", this.tagValue);
+						console.log("comment", this.commentValue);
+					}
+				}
+				this.isSave=!this.isSave;
+				this.inputAmount = '0';
+				this.tagValue = '';
+				this.commentValue = '';
+				this.currentIndex = -1; // 重置当前索引 
+				//处理添加 刷新页面 top组件更新支付金额
+			},
+			change(e) {
+				// console.log('change');
+				if (this.inputAmount == '0') {
+					this.backspace();
+				}
+				this.inputAmount += e;
+				console.log(this.inputAmount);
+			},
+			backspace() {
+				this.inputAmount = this.inputAmount.slice(0, -1);
+			},
+			handleEditBill(index) {
+				this.isSave=true;
+				this.currentIndex=index;
+				console.log('Editing bill at index:', index);
+				this.inputAmount = this.bills[index].amount.toString();
+				this.tagValue = this.bills[index].tag;
+				this.commentValue = this.bills[index].comment;
+				uni.$u.sleep().then(() => {
+					this.showPopup = !this.showPopup
+				})
+			}
 		}
 	}
 </script>
@@ -44,5 +189,90 @@
 		height: 100%;
 		position: absolute;
 		background: linear-gradient(to bottom, #FADF53 0%, #FFF1E0 100%);
+	}
+
+	.context_container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		width: 85%;
+
+	}
+
+	.nodata_container {
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.data_container {
+		margin-top: 100rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		width: 100%;
+		height: 100%;
+	}
+
+	.image_nodata {
+
+		width: 600rpx;
+		height: 600rpx;
+	}
+
+	.text_nodata {
+		font-size: 35rpx;
+		color: #9E9E9E;
+	}
+
+	.u-popup-slot {
+		width: 100%;
+		height: 800rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: 20rpx;
+	}
+
+	.input_container {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		width: 100%;
+		padding: 0;
+	}
+
+	.tag_container {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.taginput_container {
+		display: flex;
+		flex-direction: column;
+		width: 38%;
+		border-radius: 30rpx;
+		padding: 30rpx;
+		background-color: #f4f4f4;
+	}
+
+	.tag {
+		margin-right: 20rpx;
+		border-radius: 5rpx;
+		background-color: #e0e4e6;
+		padding: 10rpx;
+	}
+
+	.button_popup {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		margin-bottom: 15rpx;
 	}
 </style>
