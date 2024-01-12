@@ -17,8 +17,8 @@
 			<select v-model="newItem.dateOfUse">
 				<option disabled value="">请选择食材保质期</option>
 				<option>3天</option>
+				<option>5天</option>
 				<option>7天</option>
-				<option>14天</option>
 				<option>30天</option>
 				<option>3个月</option>
 				<option>6个月</option>

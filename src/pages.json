@@ -88,6 +88,14 @@
 				"navigationBarTitleText" : "财务统计",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/Shopping/Shopping",
+			"style" : 
+			{
+				"navigationBarTitleText" : "购物清单",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {

@@ -57,9 +57,11 @@
 					uni.navigateTo({
 						url: '/pages/FoodStorage/FoodStorage'
 					});
+				} else if (this.currentTab === '购物') {
+					uni.navigateTo({
+						url: '/pages/Shopping/Shopping'
+					});
 				}
-
-
 
 			}
 		},
