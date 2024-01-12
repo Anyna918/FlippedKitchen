@@ -1,41 +1,59 @@
 <template>
-	<view class="">
-		<u-dropdown>
-			<u-dropdown-item v-model="value1" title="距离" :options="options1"></u-dropdown-item>
-			<!-- <u-dropdown-item v-model="value2" title="温度" :options="options2"></u-dropdown-item> -->
-		</u-dropdown>
-	</view>
+  <div class="center-container">
+    <div class="auth-switch-links">
+      <span @click="switchAuthType('password')">密码验证</span>
+      <span @click="switchAuthType('sms')">短信验证</span>
+    </div>
+
+    <div v-if="authType === 'password'">
+      <!-- 密码验证相关内容 -->
+    </div>
+
+    <div v-else>
+      <!-- 短信验证相关内容 -->
+    </div>
+  </div>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				value1: 1,
-				value2: 2,
-				options1: [{
-						label: '默认排序',
-						value: 1,
-					},
-					{
-						label: '距离优先',
-						value: 2,
-					},
-					{
-						label: '价格优先',
-						value: 3,
-					}
-				],
-				options2: [{
-						label: '去冰',
-						value: 1,
-					},
-					{
-						label: '加冰',
-						value: 2,
-					},
-				],
-			}
-		},
-	}
+export default {
+  data() {
+    return {
+      authType: 'password', // 初始默认为密码验证
+      // ... 其他数据 ...
+    };
+  },
+  methods: {
+    switchAuthType(type) {
+      this.authType = type;
+    },
+    login() {
+      // 登录逻辑
+      if (this.authType === 'password') {
+        // 密码验证
+      } else if (this.authType === 'sms') {
+        // 短信验证
+      }
+    },
+  },
+};
 </script>
+
+<style scoped>
+.auth-switch-links {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.auth-switch-links span {
+  margin: 0 20px;
+  cursor: pointer;
+  color: #4caf50;
+  text-decoration: underline;
+}
+
+.auth-switch-links span:hover {
+  font-weight: bold;
+}
+</style>
