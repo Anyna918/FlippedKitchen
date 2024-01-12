@@ -36,12 +36,17 @@
 			</div>
 			<div class="food-info">
 				<label for="remark">食材备注</label>
-				<input type="text" id="remark" v-model="foodItem.remark" style="background-color: #f0f0f0; 
-					border-radius: 10px; 
-					border: 1px solid #282C35; 
-					padding: 5px; 
-					font-size: 14px;
-					margin-bottom: 15px; ">
+				<textarea id="remark" v-model="foodItem.remark" style="
+				    background-color: #f0f0f0; 
+				    border-radius: 10px; 
+				    border: 1px solid #282C35; 
+				    padding: 5px; 
+				    font-size: 14px;
+				    margin-bottom: 15px;
+				    width: 100%; /* 设置宽度为100% */
+				    height: 100px; /* 初始高度，您可以根据需要调整 */
+				    resize: vertical; /* 允许用户垂直调整大小 */
+				  "></textarea>
 			</div>
 			<view class="action-buttons">
 				<button @click="closePopup">完成</button>
