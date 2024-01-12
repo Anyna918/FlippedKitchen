@@ -1,14 +1,15 @@
 <template>
+	<div class="background">
 	<navigationBar></navigationBar>
-	<div>
 		<div class="u-grid-wrapper">
-			<u-grid :col="2" :gutter="12"> <!-- 三列布局，带有间隙 -->
+			<!-- <u-grid :col="2" :gutter="12"> -->
+			<u-grid :col="2" :gutter="12">
 				<u-grid-item v-for="item in foodItems" :key="item.id">
 					<div class="custom-card">
 						<image :src="item.icon" class="card-icon"></image>
 						<div class="card-body">
 							<h3 class="item-name">{{ item.name }}</h3>
-							<p class="item-date">{{ item.purchaseDate }}-{{ item.expiryDate }}</p>
+							<p class="item-date">{{ item.purchaseDate }}  保质期:{{ item.dateOfUse }}天</p>
 						</div>
 						<div class="card-footer">
 							<u-icon name="edit-pen" size="20" @click="editItem(item)"></u-icon>
@@ -23,8 +24,9 @@
 			<ShoppingCartPopup :visible.sync="cartPopupVisible" :shoppingLists="shoppingLists"
 				@add-to-cart="addToCart" />
 		</div>
-		<button @click="showAddFoodPopup = true">添加食材</button>
-
+		<!-- <button @click="showAddFoodPopup = true">添加食材</button> -->
+		<circleButton backColor="#CFF4CD" @click="showAddFoodPopup = true"></circleButton>
+		
 		<AddFoodItemPopup :visible.sync="showAddFoodPopup" @add-item="handleAddItem" />
 	</div>
 </template>
@@ -33,7 +35,8 @@
 	import FoodStorageDetail from '@/components/FoodStorageDetail-component.vue';
 	import ShoppingCartPopup from '@/components/ShoppingCartPopup-component.vue';
 	import AddFoodItemPopup from '@/components/AddFoodItemPopup-component.vue';
-	import navigationBar from "@/components/navigationBar-component.vue"
+	import navigationBar from "@/components/navigationBar-component.vue";
+	import circleButton from '@/components/circleButton-component.vue'
 
 	export default {
 		components: {
@@ -41,6 +44,7 @@
 			ShoppingCartPopup,
 			AddFoodItemPopup,
 			navigationBar,
+			circleButton,
 		},
 		data() {
 			return {
@@ -48,7 +52,6 @@
 						id: 1,
 						name: "苹果",
 						purchaseDate: "2024.01.01",
-						expiryDate: "2024.01.10",
 						icon: "/src/static/logo.png",
 						inCart: [],
 						dateOfUse: 10, // 保质期
@@ -60,7 +63,28 @@
 						id: 2,
 						name: "西红柿",
 						purchaseDate: "2024.01.01",
-						expiryDate: "2024.01.10",
+						icon: "/src/static/logo.png",
+						inCart: [],
+						dateOfUse: 10, // 保质期
+						useRecord: "", // 使用记录
+						remark: "阿巴阿巴", // 食材备注
+						amount: 5 // 数量
+					},
+					{
+						id: 3,
+						name: "莴笋",
+						purchaseDate: "2024.01.01",
+						icon: "/src/static/logo.png",
+						inCart: [],
+						dateOfUse: 10, // 保质期
+						useRecord: "", // 使用记录
+						remark: "阿巴阿巴", // 食材备注
+						amount: 5 // 数量
+					},
+					{
+						id: 3,
+						name: "金针菇",
+						purchaseDate: "2024.01.01",
 						icon: "/src/static/logo.png",
 						inCart: [],
 						dateOfUse: 10, // 保质期
@@ -73,17 +97,17 @@
 				detailVisible: false,
 				shoppingLists: [{
 						id: 1,
-						name: "购物清单1",
+						name: "本周清单",
 						foods: []
 					},
 					{
 						id: 2,
-						name: "购物清单2",
+						name: "本月清单",
 						foods: []
 					},
 					{
 						id: 3,
-						name: "购物清单3",
+						name: "日常采买",
 						foods: []
 					},
 				], // 购物清单数据
@@ -208,6 +232,16 @@
 </script>
 
 <style lang="scss">
+	.background {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background: linear-gradient(to bottom, #CFF4CD 0%, #EFF2F4 100%);
+	}
+	
 	.u-grid-wrapper {
 		padding: 12px;
 	}
@@ -217,21 +251,22 @@
 		border: 1px solid #eaeaea;
 		padding: 10px;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		background-color: #fff;
-		margin-bottom: 10px;
+		background-color: #ECF8EF;
+		margin-bottom: 15px;
+		margin-top: 15px;
+		
 		position: relative;
 	}
 
 	.card-icon {
-		width: 30px;
-		height: 30px;
-		position: absolute;
-		top: 10px;
-		left: 10px;
+		width: 50px;
+		height: 50px;
+		border-radius: 15%; 
 	}
 
 	.card-body {
-		padding-top: 50px;
+		padding-top: 10px;
+		padding-bottom: 10px;
 	}
 
 	.item-name {

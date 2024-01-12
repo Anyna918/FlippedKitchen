@@ -1,24 +1,22 @@
 <template>
 	<div class="overlay" v-if="visible"></div>
-	
 	<div class="detail-popup" v-if="visible">
 		<div class="food-detail-card">
 			<img :src="foodItem.icon" class="food-icon" />
-			<div class="food-info">
+			<!-- <div class="food-info">
 				<h3>{{ foodItem.name }}</h3>
 				<p class="food-use-record">
 					<label>使用记录:</label>
 					{{ foodItem.useRecord }}
 				</p>
-				<p class="food-dates">
+				<p class="food-dateofuse">
 					<label>购买日期:</label>
 					{{ foodItem.purchaseDate }}
 				</p>
 				<p class="food-dates">
-					<label>过期日期:</label>
-					{{ foodItem.expiryDate }}
+					<label>保质期</label>
+					{{ foodItem.dateOfUse }}
 				</p>
-				
 				<p class="food-quantity">
 					<label>数量:</label>
 					{{ foodItem.amount }}
@@ -27,6 +25,13 @@
 					<label>备注:</label>
 					{{ foodItem.remark }}
 				</p>
+			</div> -->
+			<div class="food-name">
+				<h3>{{ foodItem.name }}</h3>
+			</div>
+			<div class="food-info">
+				<label>购买日期</label>
+				<p>{{foodItem.purchaseDate}}</p>
 			</div>
 			<view class="action-buttons">
 				<button @click="closePopup">完成</button>
@@ -47,7 +52,7 @@
 				default: () => ({
 					name: '',
 					purchaseDate: '',
-					expiryDate: '',
+					dateOfUse:'',
 					icon: '',
 					useRecord: '',
 					amount: '',
@@ -69,7 +74,6 @@
 			closePopup() {
 				this.$emit('update:visible', false);
 				this.$emit('close', this.foodItem); // 将值传回父组件
-
 			}
 		}
 	};
@@ -105,39 +109,39 @@
 	.food-detail-card {
 		display: flex;
 		flex-direction: column;
-		/* align-items: center; */
 	}
 
 	.food-icon {
 		max-width: 200px;
-		/* Adjust as needed */
-		border-radius: 10px;
+		border-radius: 15px;
+		margin-bottom: 20px;
 	}
 
-	.food-info {
-		/* text-align: center; */
-	}
+.food-info label {
+  display: block; /* 使label占据整行 */
+  margin-bottom: 5px; /* 与下方内容的间隔 */
+}
 
-	.food-dates,
-	.food-use-record,
-	.food-quantity,
-	.food-remark {
-		margin: 10px 0;
-	}
+.food-info p {
+	background-color: #f0f0f0; /* 圆角框的背景色 */
+	border-radius: 10px; /* 圆角效果 */
+	padding: 5px; /* 内边距 */
+  color: grey; /* 字段值的颜色 */
+  font-size: 0.9em; /* 字体大小稍小 */
+  margin-bottom: 10px; /* 段落之间的间隔 */
+}
 
-	.food-actions {
-		display: flex;
-		justify-content: space-evenly;
-		width: 100%;
-	}
+.action-buttons button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 16px;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-	.action-icon {
-		cursor: pointer;
-		display: inline-block;
-		width: 30px;
-		/* Adjust as needed */
-		height: 30px;
-		/* Adjust as needed */
-		background-size: cover;
-	}
+.action-buttons {
+  text-align: center; /* 按钮容器居中对齐 */
+}
 </style>

@@ -12,7 +12,7 @@
 	{
 		"path": "pages/FoodStorage/FoodStorage",
 		"style": {
-			"navigationBarTitleText": "this is foodstorage",
+			"navigationBarTitleText": "食材储备",
 			"enablePullDownRefresh": false
 		}
 	},
