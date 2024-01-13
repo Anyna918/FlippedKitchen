@@ -2,7 +2,7 @@
 	<div class="overlay" v-if="visible"></div>
 	<div class="detail-popup" v-if="visible">
 		<div class="food-detail-card">
-			<img :src="foodItem.icon" class="food-icon" />
+			<!-- <img :src="foodItem.icon" class="food-icon" /> -->
 			<div class="food-name">
 				<h2 style="text-align: center;margin-bottom: 20px;">{{ foodItem.name }}</h2>
 			</div>

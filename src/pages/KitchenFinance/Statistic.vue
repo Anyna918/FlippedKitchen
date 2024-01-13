@@ -13,12 +13,16 @@
 			<p class="text_header">支出对比</p>
 			<image src="../../static/KitchenFinance/bar.png" class="image_icon"></image>
 		</view>
-		<view id="barChart" style="width: 100%; height: 400rpx;"></view>
+		<view class="charts-box">
+			<qiun-data-charts type="mount" :opts="opts" :chartData="chartData" />
+		</view>
 		<view class="image_header" style="margin-top: 15rpx;">
 			<p class="text_header">支出类型</p>
 			<image src="../../static/KitchenFinance/pie.png" class="image_icon"></image>
 		</view>
-		<view id="pieChart" style="width: 100%; height: 400rpx;margin-top:35rpx;margin-right: 20rpx;"></view>
+		<view class="charts-box">
+			<qiun-data-charts type="pie" :opts="opts" :chartData="chartData" />
+		</view>
 	</view>
 </template>
 
@@ -33,7 +37,7 @@
 		},
 		mounted() {
 			this.initBarChart(); // 初始化图表
-			this.initPieChart(); // 初始化饼图
+			//this.initPieChart(); // 初始化饼图
 		},
 		data() {
 			return {
@@ -60,6 +64,52 @@
 				year: '2024',
 				month: '01',
 				barChart: null, // 用于保存 ECharts 实例的引用
+				chartData: {},
+				opts: {
+					color: ["#1890FF", "#91CB74", "#FAC858", "#EE6666", "#73C0DE", "#3CA272", "#FC8452", "#9A60B4",
+						"#ea7ccc"
+					],
+					padding: [15, 15, 0, 5],
+					enableScroll: false,
+					legend: {
+						show: false
+					},
+					xAxis: {
+						disableGrid: true,
+						/* rotateLabel:true,
+						marginTop:10 */
+					},
+					yAxis: {
+						disableGrid: true,
+						disabled: true,
+						data: [{
+							min: 0
+						}]
+					},
+					extra: {
+						mount: {
+							type: "mount",
+							widthRatio: 1.5
+						}
+					}
+				},
+				opts1: {
+				        color: ["#1890FF","#91CB74","#FAC858","#EE6666","#73C0DE","#3CA272","#FC8452","#9A60B4","#ea7ccc"],
+				        padding: [5,5,5,5],
+				        enableScroll: false,
+				        extra: {
+				          pie: {
+				            activeOpacity: 0.5,
+				            activeRadius: 10,
+				            offsetAngle: 0,
+				            labelWidth: 15,
+				            border: true,
+				            borderWidth: 3,
+				            borderColor: "#FFFFFF",
+				            linearType: "custom"
+				          }
+				        }
+				      }
 			}
 		},
 		watch: {
@@ -85,10 +135,10 @@
 				this.month = data.month.toString();
 			},
 			initBarChart() {
-				if (this.barChart === null) { // 只有当实例不存在时才初始化
+				/* if (this.barChart === null) { // 只有当实例不存在时才初始化
 					const barDom = document.getElementById('barChart');
 					this.barChart = echarts.init(barDom);
-				}
+				} */
 				this.updateChartData();
 			},
 			initPieChart() {
@@ -101,8 +151,7 @@
 			updateChartData() {
 				// 根据当前的 year 和 month 获取新数据
 				const newData = this.getNewData(this.year, this.month);
-				// 更新图表
-				this.updateBarChart(newData);
+
 			},
 			updatePieChartData() {
 				// 使用 getNewPieData 方法获取新的饼图数据
@@ -175,21 +224,34 @@
 				this.pieChart.setOption(option);
 			},
 			getNewData(year, month) {
-				// 根据当前的年份和月份获取数据
-				// 这里您可以根据实际情况获取和返回数据
-				// 示例代码，需要根据实际情况调整
-				return year === "2024" && month === "01" ? {
-					"2024-01": 300,
-					"2024-02": 200,
-					"2024-03": 350,
-					"2024-04": 250,
-					"2024-05": 400
-				} : {
-					"2024-06": 450,
-					"2024-07": 320,
-					"2024-08": 280,
-					"2024-09": 500,
-					"2024-10": 370
+				let newData;
+
+				if (year === "2024" && month === "01") {
+					newData = {
+						"2024-01": 300,
+						"2024-02": 200,
+						"2024-03": 350,
+						"2024-04": 250,
+						"2024-05": 400
+					};
+				} else {
+					newData = {
+						"2024-06": 450,
+						"2024-07": 320,
+						"2024-08": 280,
+						"2024-09": 500,
+						"2024-10": 370
+					};
+				}
+
+				// 转换 newData 为 ECharts 需要的格式
+				this.chartData = {
+					series: [{
+						data: Object.entries(newData).map(([name, value]) => ({
+							name: name,
+							value: value
+						}))
+					}]
 				};
 			},
 			getNewPieData(year, month) {
@@ -212,40 +274,27 @@
 			},
 
 			updateBarChart(newData) {
-				const months = Object.keys(newData);
-				const totals = Object.values(newData);
-
-
-				const option = {
-					xAxis: {
-						type: 'category',
-						data: months
-					},
-					yAxis: {
-						type: 'value'
-					},
+				let res = {
 					series: [{
-						data: totals.map((value, index) => {
-							// 为每个条形指定颜色和显示值
-							const color = index === totals.length - 1 ? '#6750AA' :
-							'#D2B4DE'; // 最后一个条形红色，其他绿色
-							return {
-								value: value,
-								itemStyle: {
-									color: color
-								},
-								label: {
-									show: true,
-									position: 'top',
-									formatter: '{c}' // 显示具体数值
-								}
-							};
-						}),
-						type: 'bar'
+						data: [{
+							"name": "一班",
+							"value": 82
+						}, {
+							"name": "二班",
+							"value": 63
+						}, {
+							"name": "三班",
+							"value": 86
+						}, {
+							"name": "四班",
+							"value": 65
+						}, {
+							"name": "五班",
+							"value": 79
+						}]
 					}]
 				};
-
-				this.barChart.setOption(option);
+				this.chartData = JSON.parse(JSON.stringify(res));
 			},
 
 
@@ -311,5 +360,10 @@
 		margin-left: 10rpx;
 		width: 35rpx;
 		height: 35rpx;
+	}
+
+	.charts-box {
+		width: 90%;
+		height: 400rpx;
 	}
 </style>

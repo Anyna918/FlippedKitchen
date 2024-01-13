@@ -1,0 +1,15 @@
+
+.auth-switch-links[data-v-73f8d28c] {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.auth-switch-links span[data-v-73f8d28c] {
+  margin: 0 20px;
+  cursor: pointer;
+  color: #4caf50;
+  text-decoration: underline;
+}
+.auth-switch-links span[data-v-73f8d28c]:hover {
+  font-weight: bold;
+}

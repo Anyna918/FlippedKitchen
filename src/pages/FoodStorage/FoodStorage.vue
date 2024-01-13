@@ -53,7 +53,7 @@
 						id: 1,
 						name: "面包",
 						purchaseDate: "2024.01.14",
-						icon: "/src/static/FoodIcon/bread.png",
+						icon: "../../static/FoodIcon/bread.png",
 						inCart: [],
 						dateOfUse: 3, // 保质期
 						useRecord: "充足", // 使用记录
@@ -64,7 +64,7 @@
 						id: 2,
 						name: "葡萄",
 						purchaseDate: "2024.01.05",
-						icon: "/src/static/FoodIcon/grape.png",
+						icon: "../../static/FoodIcon/grape.png",
 						inCart: [],
 						dateOfUse: 7, // 保质期
 						useRecord: "即将用尽", // 使用记录
@@ -75,9 +75,9 @@
 						id: 3,
 						name: "玉米",
 						purchaseDate: "2024.01.01",
-						icon: "/src/static/FoodIcon/popcorn.png",
+						icon: "../../static/FoodIcon/popcorn.png",
 						inCart: [],
-						dateOfUse: 30, // 保质期
+						dateOfUse: 7, // 保质期
 						useRecord: "充足", // 使用记录
 						remark: "这是玉米哦", // 食材备注
 						amount: 10 // 数量
@@ -86,7 +86,7 @@
 						id: 4,
 						name: "草莓",
 						purchaseDate: "2024.01.11",
-						icon: "/src/static/FoodIcon/strawberry.png",
+						icon: "../../static/FoodIcon/strawberry.png",
 						inCart: [],
 						dateOfUse: 3, // 保质期
 						useRecord: "即将用尽", // 使用记录
@@ -97,7 +97,7 @@
 						id: 5,
 						name: "西瓜",
 						purchaseDate: "2024.01.11",
-						icon: "/src/static/FoodIcon/watermelon.png",
+						icon: "../../static/FoodIcon/watermelon.png",
 						inCart: [],
 						dateOfUse: 3, // 保质期
 						useRecord: "已经用尽", // 使用记录
@@ -256,7 +256,7 @@
 	
 	.u-grid-wrapper {
 		padding: 12px;
-		  height: 100%; /* 或您期望的固定高度 */
+		  height: 90%; /* 或您期望的固定高度 */
 
 		  overflow-y: scroll; /* 允许垂直滚动 */
 

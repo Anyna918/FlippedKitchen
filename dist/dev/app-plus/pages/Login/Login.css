@@ -1,0 +1,101 @@
+
+body[data-v-d74ad113] {
+		background: linear-gradient(to bottom, #88BFFF 0%, #FFFFFF 100%);
+}
+.login-container[data-v-d74ad113] {
+		max-width: 400px;
+		margin: auto;
+		padding: 20px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		border-radius: 8px;
+		/* background-color: #ffffff; */
+		margin-top: 120px;
+}
+.login-title[data-v-d74ad113] {
+		text-align: center;
+		font-size: 50px;
+		/* color: #333; */
+		color: #888eff;
+}
+.login-notice[data-v-d74ad113] {
+		/* color: #A7FB96; */
+		text-align: center;
+		/* color: #333; */
+		font-size: 15px;
+}
+.login-form[data-v-d74ad113] {
+		margin-top: 50px;
+		display: flex;
+		flex-direction: column;
+		margin-top: 20px;
+}
+.login-label[data-v-d74ad113] {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 6px;
+		color: #555;
+}
+.login-input[data-v-d74ad113] {
+		height: 30px;
+		/* margin-top: 15px; */
+		padding: 8px;
+		/* margin-bottom: 12px; */
+		border: 1px solid #333;
+		border-radius: 8px;
+		font-size: 17px;
+}
+.login-button[data-v-d74ad113] {
+		background-color: #8DA6EE;
+		color: #fff;
+		padding: 10px;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 16px;
+		margin-top: 40px;
+}
+.auth-switch-links[data-v-d74ad113] {
+		display: flex;
+		justify-content: center;
+		margin-top: 20px;
+}
+.auth-switch-links span[data-v-d74ad113] {
+		margin: 0 20px;
+		cursor: pointer;
+		color: #4E8AC6;
+}
+.auth-switch-links-selected[data-v-d74ad113] {
+		font-weight: bold;
+		text-decoration: underline;
+}
+.password-notice-container[data-v-d74ad113] {
+		display: flex;
+		align-items: center;
+}
+.password-notice[data-v-d74ad113] {
+		flex: 1;
+		text-align: center;
+		padding: 10px;
+		opacity: 80%;
+		text-decoration: underline;
+}
+.password-input-container[data-v-d74ad113] {
+		display: flex;
+		align-items: center;
+}
+.verify-button[data-v-d74ad113] {
+		margin-top: 30px;
+		width: 100px;
+		height: 50px;
+		font-size: 16px;
+		padding: 0;
+		padding-top: 5px;
+		background-color: rgba(0, 0, 0, 0);
+		/* 使用 rgba，其中最后一个参数 0.5 表示透明度为 0.5 */
+		;
+		border: 1px solid #333;
+}
+.verify-button[data-v-d74ad113]:active {
+		background-color: #4E8AC6;
+}

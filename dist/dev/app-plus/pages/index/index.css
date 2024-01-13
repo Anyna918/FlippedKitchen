@@ -21,3 +21,6 @@
   font-size: 1.125rem;
   color: #8f8f94;
 }
+.u-picker {
+  border: 1px solid red; /* 临时样式，用于检测 */
+}

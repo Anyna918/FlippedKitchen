@@ -60,7 +60,7 @@
 				newItem: {
 					name: '',
 					purchaseDate: '',
-					icon: "/src/static/FoodIcon/milk.png", // 文件上传后的路径或文件对象
+					icon: "../../static/FoodIcon/milk.png", // 文件上传后的路径或文件对象
 					dateOfUse: '',
 					useRecord: '',
 					amount: '',
