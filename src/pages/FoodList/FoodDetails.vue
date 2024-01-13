@@ -11,8 +11,8 @@
 		<image src="../../static/more.png" @click="clickMore()"
 			style="width: 30px; height: 30px; position: absolute; right: 0;"></image>
 		<div style="position: absolute; right: 0; margin-top: 60px;" v-if="showmore">
-			<p>123</p>
-			<p>123</p>
+			<p>转发</p>
+			<p>举报</p>
 		</div>
 	</div>
 
