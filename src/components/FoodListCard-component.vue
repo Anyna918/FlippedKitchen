@@ -19,7 +19,7 @@
 						<p class="tags_words_card">{{tags[2]}}</p> -->
 						</div>
 					</div>
-					<p style="color: gray; font-size: 12px">{{synopsis}}</p>
+					<p style="color: gray; font-size: 12px">{{Synopsis}}</p>
 
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 			return {
 				ImageSrc: '',
 				tags: [],
-				synopsis: '',
+				// synopsis: '',
 				colorChanged_1: false, // 初始状态
 				colorChanged_2: false, // 初始状态
 
@@ -60,20 +60,24 @@
 		//传入参数 卡片名称
 		props: {
 			FoodName: String,
+			Synopsis: String,
 		},
 
 		emits: ['FoodName'],
+		emits: ['Synopsis'],
 		methods: {
 			sendMessage() {
 				// console.log(this.keyword);
 				this.$emit('FoodName', this.keyword)
+				this.$emit('Synopsis', this.keyword)
+
 			},
 			getDetails() {
 				this.ImageSrc = "../../static/cabbage.jpeg";
 				this.tags.push('蔬菜');
 				this.tags.push('营养');
 				this.tags.push('维生素');
-				this.synopsis = '清爽蔬菜, 营养丰富'
+				// this.synopsis = '清爽蔬菜, 营养丰富'
 			},
 			cardClick() {
 				uni.navigateTo({
@@ -83,9 +87,11 @@
 			},
 			toggleButtonColor_1() {
 				this.colorChanged_1 = !this.colorChanged_1; // 切换状态
+				console.log(this.colorChanged_1);
 			},
 			toggleButtonColor_2() {
 				this.colorChanged_2 = !this.colorChanged_2; // 切换状态
+				console.log(this.colorChanged_2);
 			}
 		},
 		created() {
