@@ -70,8 +70,20 @@
     },
     "vueVersion" : "3",
     "h5" : {
-        "router" : {
-            "mode" : "history"
+        "devServer" : {
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/api" : {
+                    "target" : "http://localhost:7217",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "ws" : false,
+                    "pathRewrite" : {
+                        "^/api" : ""
+                    }
+                }
+            },
+            "https" : false
         }
     }
 }

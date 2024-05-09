@@ -26,9 +26,17 @@
 				show: false,
 				pickerValue: Number(new Date()), // 当前时间的时间戳
 				maxValue: Number(new Date()), // 当前时间的时间戳作为最大值
-				expense: 123.00,
-				cnt:4,
 			};
+		},
+		props: {
+			cnt: {
+				type: Number,
+				default: 0
+			},
+			expense: {
+				type: Number,
+				default: 0
+			},
 		},
 		computed: {
 			// 计算属性：年份

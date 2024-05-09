@@ -1,25 +1,27 @@
 <template>
 	<view class="content_in">
-		<view class="date_container">
-			<p class="text_year">{{year}}年</p>
-			<view class="select_container">
-				<p class="text_month">{{month}}月</p>
-				<u-icon name="arrow-down-fill" color="#000000" size="35rpx" @click="showSelecter"
-					style="margin-right: 25rpx;"></u-icon>
-				<u-datetime-picker :show="show" mode="year-month" v-model="pickerValue" :maxDate="maxValue" ref="picker"
-					closeOnClickOverlay @confirm="confirm" @cancel="cancel" @change="change"
-					@close="close"></u-datetime-picker>
-				<u-line direction="col" color="#8A8A8A" :hairline=false length="70rpx"></u-line>
+		<view style="display:flex;flex-direction: row;">
+			<view class="date_container">
+				<p class="text_year">{{year}}年</p>
+				<view class="select_container">
+					<p class="text_month">{{month}}月</p>
+					<u-icon name="arrow-down-fill" color="#000000" size="35rpx" @click="showSelecter"
+						style="margin-right: 25rpx;"></u-icon>
+					<u-datetime-picker :show="show" mode="year-month" v-model="pickerValue" :maxDate="maxValue" ref="picker"
+						closeOnClickOverlay @confirm="confirm" @cancel="cancel" @change="change"
+						@close="close"></u-datetime-picker>
+					<u-line direction="col" color="#8A8A8A" :hairline=false length="70rpx"></u-line>
+				</view>
+			</view>
+			<view class="date_container">
+				<view class="select_container" style="margin-left: 0rpx;">
+					<p class="text_year">支出</p>
+					<image src="../static/KitchenFinance/expense.png" class="image_icon"></image>
+				</view>
+				<p class="text_month" style="text-shadow:none;letter-spacing: normal;">{{expense.toFixed(2)}}</p>
 			</view>
 		</view>
-		<view class="date_container">
-			<view class="select_container" style="margin-left: 0rpx;">
-				<p class="text_year">支出</p>
-				<image src="../static/KitchenFinance/expense.png" class="image_icon"></image>
-			</view>
-			<p class="text_month" style="text-shadow:none;letter-spacing: normal;">{{expense.toFixed(2)}}</p>
-		</view>
-		<view style="margin-left: 90rpx;">
+		<view style="margin-right: 0rpx;">
 			<!-- <image src="../static/KitchenFinance/statistic.png" class="image_statistic"></image> -->
 			<u-button custom-style="font-size:30rpx;font-weight:bold" size="small"
 				color="linear-gradient(to right, #6600CC, #d2b4de)" shape="circle" @click="gotoStatistic">统计</u-button>
@@ -36,8 +38,13 @@
 				show: false,
 				pickerValue: Number(new Date()), // 当前时间的时间戳
 				maxValue: Number(new Date()), // 当前时间的时间戳作为最大值
-				expense: 123.00,
 			};
+		},
+		props: {
+			expense: {
+				type: Number,
+				default: 0
+			}
 		},
 		computed: {
 			// 计算属性：年份
@@ -109,7 +116,7 @@
 		margin-left: 150rpx; */
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-start;
+		justify-content: space-between;
 	}
 
 	.date_container {

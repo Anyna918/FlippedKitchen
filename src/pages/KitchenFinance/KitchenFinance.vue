@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<kitchenIndexTop style="margin-top: 60rpx;" @update-date="handleUpdateDate"></kitchenIndexTop>
+		<kitchenIndexTop :expense="billAmount" style="margin-top: 60rpx;" @update-date="handleUpdateDate"></kitchenIndexTop>
 		<view class="context_container">
 			<view class="nodata_container" v-show="!showBill">
 				<image src="../../static/KitchenFinance/nodata.png" class="image_nodata"></image>
@@ -76,29 +76,15 @@
 			// 计算属性：年份
 			showBill() {
 				return (this.bills.length > 0);
-			},
+			}
 		},
 		data() {
 			return {
-				bills: [{
-						tag: '餐饮',
-						comment: '午餐',
-						amount: 35.00,
-						date: '2024-01-15'
-					},
-					{
-						tag: '交通',
-						comment: '地铁费',
-						amount: 10.00,
-						date: '2024-01-16'
-					},
-					{
-						tag: '购物',
-						comment: '书籍购买',
-						amount: 80.00,
-						date: '2024-01-17'
-					}
-				],
+				userId:1,
+				currentYear:new Date().getFullYear(),
+				currentMonth:new Date().getMonth() + 1,
+				billAmount:0,
+				bills: [],
 				customTags: ["日常采买", "节日囤货"],
 				showPopup: false,
 				showKeyboard: true,
@@ -118,11 +104,26 @@
 				},
 			}
 		},
+		watch: {
+		    'bills.length': function(newLength, oldLength) {
+		        this.billAmount = this.bills.reduce((total, bill) => total + bill.amount, 0);
+		    },
+			bills: {
+			        handler: function (newBills, oldBills) {
+			            this.billAmount = newBills.reduce((total, bill) => total + bill.amount, 0);
+			        },
+			        deep: true
+			    }
+		},
 		methods: {
 			handleUpdateDate(data) {
 				console.log('Received year:', data.year);
 				console.log('Received month:', data.month);
-				// 进行进一步的处理
+				console.log("The type of currentMonth is:", typeof this.currentMonth);
+				// 获取对应账单列表
+				this.currentYear=data.year;
+				this.currentMonth=data.month;
+				this.fetchBills();
 			},
 			addBill() {
 				console.log("添加");
@@ -133,33 +134,151 @@
 					this.showPopup = !this.showPopup
 				})
 			},
+			fetchBills(){
+				uni.request({
+					url: `/api/finance/getAllBill?userId=${this.userId}&year=${this.currentYear}&month=${this.currentMonth}`,
+					method: 'GET',
+					success: (res) => {
+						console.log("Response object:", res.data);  // 查看完整的响应对象
+						if (res.data.code === 200) {
+							res.data.data = JSON.parse(res.data.data);
+							this.bills = res.data.data.bills.map(item => ({
+								id:item.bill_id,
+								tag: item.tag,
+								comment: item.bill_remark,
+								amount: item.bill_amount,
+								date: new Date(item.bill_createtime).toISOString().split('T')[0] // 转换时间戳为日期格式
+							})).sort((a, b) => new Date(a.date) - new Date(b.date)); // 按日期排序
+							this.billAmount=res.data.data.totalAmount;
+						} else {
+							console.error('Failed to fetch bills:', res.data.msg);
+						}
+					},
+					fail: (error) => {
+						console.error('Request failed:', error);
+					}
+				});
+			},
 			open() {
 				// console.log('open');
 			},
 			close(e) {
 				this.showPopup = false
 				this.confirmSave = e;
-				console.log(this.currentIndex);
 				let index = this.currentIndex;
 				// 处理保存
 				if (this.isSave && this.inputAmount != '0' && this.confirmSave && this.tagValue != '') {
-					console.log("进这里")
-					this.bills[index].amount = parseFloat(this.inputAmount);
-					this.bills[index].tag = this.tagValue;
-					this.bills[index].comment = this.commentValue;
+					console.log("编辑账单")
+					let bill=this.bills[index];
+					uni.request({
+					    url: '/api/finance/editBill', // 你的服务器端点 URL
+					    method: 'PUT',
+					    data: {
+							bill_id:bill.id,
+					        bill_createtime: bill.date, 
+					        bill_amount: parseFloat(this.inputAmount),
+					        bill_remark: this.commentValue,
+					        tag_id: 0,
+					        user_id: this.userId,
+					        tag: this.tagValue
+					    },
+					    header: {
+					        'Content-Type': 'application/json' // 设置请求头
+					    },
+					    success:  (res) => {
+							bill.amount = parseFloat(this.inputAmount);
+							bill.tag = this.tagValue;
+							bill.comment = this.commentValue;
+							this.isSave=false;
+							this.inputAmount = '0';
+							this.tagValue = '';
+							this.commentValue = '';
+							this.currentIndex = -1; // 重置当前索引
+					        
+					    },
+					    fail: (error) => {
+					        // 请求失败的处理
+					        console.error(error);
+							this.isSave=false;
+							this.inputAmount = '0';
+							this.tagValue = '';
+							this.commentValue = '';
+							this.currentIndex = -1; // 重置当前索引
+					    }
+					});
 				} else { //处理添加
 					if (this.inputAmount != '0' && this.tagValue != '' && this.confirmSave) {
 						console.log("amount", this.inputAmount);
 						console.log("tag", this.tagValue);
 						console.log("comment", this.commentValue);
-						this.showToast(this.successToast);
+						// 获取当前日期并格式化
+						const currentDate = new Date();
+						const formattedDate = currentDate.toISOString().split('T')[0]; // 格式为 YYYY-MM-DD
+						const offset = 8; // 对于东八区，偏移量是+8小时
+						const localDate = new Date(currentDate.getTime() + offset * 3600 * 1000);
+						const isoString = localDate.toISOString().replace('Z', '+08:00'); // 替换'Z'为东八区的偏移量
+						
+						uni.request({
+						    url: '/api/finance/addBill', // 你的服务器端点 URL
+						    method: 'POST',
+						    data: {
+								bill_id:0,
+						        bill_createtime: isoString, // 你的数据字段
+						        bill_amount: parseFloat(this.inputAmount),
+						        bill_remark: this.commentValue,
+						        tag_id: 0,
+						        user_id: this.userId,
+						        tag: this.tagValue
+						    },
+						    header: {
+						        'Content-Type': 'application/json' // 设置请求头
+						    },
+						    success:  (res) => {
+								const billid=res.data.data;
+								if(billid!=-1)
+								{
+									// 创建新的账单对象
+									const newBill = {
+										id:billid,
+										tag: this.tagValue,
+										comment: this.commentValue,
+										amount: parseFloat(this.inputAmount), // 确保amount是数字类型
+										date: formattedDate
+									};	
+									// 将新账单添加到bills数组
+									this.bills.push(newBill);
+									this.showToast(this.successToast);
+								}
+								this.isSave=false;
+								this.inputAmount = '0';
+								this.tagValue = '';
+								this.commentValue = '';
+								this.currentIndex = -1; // 重置当前索引
+						        
+						    },
+						    fail: (error) => {
+						        // 请求失败的处理
+						        console.error(error);
+								this.isSave=false;
+								this.inputAmount = '0';
+								this.tagValue = '';
+								this.commentValue = '';
+								this.currentIndex = -1; // 重置当前索引
+						    }
+						});
+
+						
 					}
+					else{
+						this.isSave=false;
+						this.inputAmount = '0';
+						this.tagValue = '';
+						this.commentValue = '';
+						this.currentIndex = -1; // 重置当前索引
+					}
+					
 				}
-				this.isSave=false;
-				this.inputAmount = '0';
-				this.tagValue = '';
-				this.commentValue = '';
-				this.currentIndex = -1; // 重置当前索引 
+				 
 				//处理添加 刷新页面 top组件更新支付金额
 			},
 			change(e) {

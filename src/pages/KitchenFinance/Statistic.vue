@@ -8,7 +8,8 @@
 				<p class="grid_title">年账单</p>
 			</view>
 		</view>
-		<kitchenStatisticTop style="margin-top: 35rpx;" @update-date="handleUpdateDate"></kitchenStatisticTop>
+		<kitchenStatisticTop :cnt="count" :expense="expense" style="margin-top: 35rpx;" @update-date="handleUpdateDate">
+		</kitchenStatisticTop>
 		<view class="image_header">
 			<p class="text_header">支出对比</p>
 			<image src="../../static/KitchenFinance/bar.png" class="image_icon"></image>
@@ -20,8 +21,8 @@
 			<p class="text_header">支出类型</p>
 			<image src="../../static/KitchenFinance/pie.png" class="image_icon"></image>
 		</view>
-		<view class="charts-box">
-			<qiun-data-charts type="pie" :opts="opts" :chartData="chartData" />
+		<view class="charts-box" style="margin-top: 70rpx;">
+			<qiun-data-charts type="pie" :opts="opts1" :chartData="pieData" />
 		</view>
 	</view>
 </template>
@@ -36,35 +37,31 @@
 			kitchenStatisticTop
 		},
 		mounted() {
-			this.initBarChart(); // 初始化图表
-			//this.initPieChart(); // 初始化饼图
+			//this.updatePieChartData();
 		},
 		data() {
 			return {
+				userId: 1,
 				isMonth: true,
-				bills: [{
-						tag: '餐饮',
-						comment: '午餐',
-						amount: 35.00,
-						date: '2024-01-15'
-					},
-					{
-						tag: '交通',
-						comment: '地铁费',
-						amount: 10.00,
-						date: '2024-01-16'
-					},
-					{
-						tag: '购物',
-						comment: '书籍购买',
-						amount: 80.00,
-						date: '2024-01-17'
-					}
-				],
 				year: '2024',
 				month: '01',
-				barChart: null, // 用于保存 ECharts 实例的引用
-				chartData: {},
+				count: 0,
+				expense:0,
+				chartData: {
+					/* series: [{
+						data: [{
+								name: "2024-01",
+								value: 300
+							},
+							{
+								name: "2024-02",
+								value: 200
+							}
+							
+						]
+					}] */
+				},
+				pieData: {},
 				opts: {
 					color: ["#1890FF", "#91CB74", "#FAC858", "#EE6666", "#73C0DE", "#3CA272", "#FC8452", "#9A60B4",
 						"#ea7ccc"
@@ -94,207 +91,67 @@
 					}
 				},
 				opts1: {
-				        color: ["#1890FF","#91CB74","#FAC858","#EE6666","#73C0DE","#3CA272","#FC8452","#9A60B4","#ea7ccc"],
-				        padding: [5,5,5,5],
-				        enableScroll: false,
-				        extra: {
-				          pie: {
-				            activeOpacity: 0.5,
-				            activeRadius: 10,
-				            offsetAngle: 0,
-				            labelWidth: 15,
-				            border: true,
-				            borderWidth: 3,
-				            borderColor: "#FFFFFF",
-				            linearType: "custom"
-				          }
-				        }
-				      }
-			}
-		},
-		watch: {
-			// 监视 year 和 month 的变化
-			year(newYear, oldYear) {
-				if (newYear !== oldYear) {
-					this.updateChartData();
-					this.updatePieChartData();
-				}
-			},
-			month(newMonth, oldMonth) {
-				if (newMonth !== oldMonth) {
-					this.updateChartData();
-					this.updatePieChartData();
+					color: ["#1890FF", "#91CB74", "#FAC858", "#EE6666", "#73C0DE", "#3CA272", "#FC8452", "#9A60B4",
+						"#ea7ccc"
+					],
+					padding: [5, 5, 5, 5],
+					enableScroll: false,
+					extra: {
+						pie: {
+							activeOpacity: 0.5,
+							activeRadius: 10,
+							offsetAngle: 0,
+							labelWidth: 15,
+							border: true,
+							borderWidth: 3,
+							borderColor: "#FFFFFF",
+							linearType: "custom"
+						}
+					}
 				}
 			}
 		},
+
 		methods: {
 			handleUpdateDate(data) {
 				console.log('Received year:', data.year);
 				console.log('Received month:', data.month);
-				this.year = data.year.toString();
-				this.month = data.month.toString();
-			},
-			initBarChart() {
-				/* if (this.barChart === null) { // 只有当实例不存在时才初始化
-					const barDom = document.getElementById('barChart');
-					this.barChart = echarts.init(barDom);
-				} */
-				this.updateChartData();
-			},
-			initPieChart() {
-				if (!this.pieChart) { // 只有当实例不存在时才初始化
-					const pieDom = document.getElementById('pieChart');
-					this.pieChart = echarts.init(pieDom);
-				}
-				this.updatePieChartData();
-			},
-			updateChartData() {
-				// 根据当前的 year 和 month 获取新数据
-				const newData = this.getNewData(this.year, this.month);
-
-			},
-			updatePieChartData() {
-				// 使用 getNewPieData 方法获取新的饼图数据
-				const newData = this.getNewPieData(this.year, this.month);
-
-				// 准备饼图数据
-				const pieData = Object.keys(newData).map(tag => ({
-					name: tag,
-					value: newData[tag]
-				}));
-				const option = {
-					tooltip: {
-						trigger: 'item',
-						formatter: '{a} <br/>{b}: {c} ({d}%)' // 显示提示框内容，包括系列名、数据名、数据值和百分比
-					},
-					legend: {
-						orient: 'vertical',
-						top: 'bottom',
-						left: 'right',
-						formatter: function(name) {
-							// 计算总和
-							let total = 0;
-							pieData.forEach(item => {
-								total += item.value;
-							});
-
-							// 找到当前数据项
-							let target;
-							for (let i = 0; i < pieData.length; i++) {
-								if (pieData[i].name === name) {
-									target = pieData[i].value;
-									break;
-								}
-							}
-
-							// 计算百分比
-							const percent = ((target / total) * 100);
-							return `${name}: ${percent}%`;
+				uni.request({
+					url: `/api/finance/stats?userId=${this.userId}&year=${data.year}&month=${data.month}`,
+					method: 'GET',
+					success: (res) => {
+						console.log("Response object:", res.data); // 查看完整的响应对象
+						if (res.data.code === 200) {
+							const obj = JSON.parse(res.data.data);
+							console.log(obj.billAmounts);
+							this.count = obj.billCount;
+							this.expense=obj.billSum;
+							this.chartData = {
+								series: [{
+									data: obj.billAmounts.map(item => ({
+										name: `${item.year}-${item.month.toString().padStart(2, '0')}`, // 格式化月份为两位数
+										value: item.totalAmount
+									}))
+								}]
+							};
+							//this.chartData = chartData;
+							const pieData = {
+								series: [{
+									data: obj.multiBillTags.map(item => ({
+										name: item.tag, // 格式化月份为两位数
+										value: item.count
+									}))
+								}]
+							};
+							this.pieData = pieData;
+						} else {
+							console.error('Failed to fetch bills:', res.data.msg);
 						}
 					},
-					series: [{
-						name: '支出类型',
-						type: 'pie',
-						radius: ['0%', '70%'],
-						avoidLabelOverlap: false,
-						itemStyle: {
-							borderRadius: 10,
-							borderColor: '#fff',
-							borderWidth: 2
-						},
-						label: {
-							show: false,
-							position: 'center'
-						},
-						emphasis: {
-							label: {
-								show: true,
-								fontSize: 40,
-								fontWeight: 'bold'
-							}
-						},
-						labelLine: {
-							show: false
-						},
-						data: pieData
-					}]
-				};
-
-				// 使用配置项和数据显示图表
-				this.pieChart.setOption(option);
-			},
-			getNewData(year, month) {
-				let newData;
-
-				if (year === "2024" && month === "01") {
-					newData = {
-						"2024-01": 300,
-						"2024-02": 200,
-						"2024-03": 350,
-						"2024-04": 250,
-						"2024-05": 400
-					};
-				} else {
-					newData = {
-						"2024-06": 450,
-						"2024-07": 320,
-						"2024-08": 280,
-						"2024-09": 500,
-						"2024-10": 370
-					};
-				}
-
-				// 转换 newData 为 ECharts 需要的格式
-				this.chartData = {
-					series: [{
-						data: Object.entries(newData).map(([name, value]) => ({
-							name: name,
-							value: value
-						}))
-					}]
-				};
-			},
-			getNewPieData(year, month) {
-				// 根据年份和月份获取饼图数据
-				// 这里您可以根据实际情况获取和返回数据
-				// 示例代码，需要根据实际情况调整
-				return year === "2024" && month === "01" ? {
-					'餐饮': 15,
-					'交通': 10,
-					'娱乐': 8,
-					'购物': 12,
-					'其他': 5
-				} : {
-					'餐饮': 18,
-					'交通': 7,
-					'娱乐': 14,
-					'购物': 9,
-					'其他': 6
-				};
-			},
-
-			updateBarChart(newData) {
-				let res = {
-					series: [{
-						data: [{
-							"name": "一班",
-							"value": 82
-						}, {
-							"name": "二班",
-							"value": 63
-						}, {
-							"name": "三班",
-							"value": 86
-						}, {
-							"name": "四班",
-							"value": 65
-						}, {
-							"name": "五班",
-							"value": 79
-						}]
-					}]
-				};
-				this.chartData = JSON.parse(JSON.stringify(res));
+					fail: (error) => {
+						console.error('Request failed:', error);
+					}
+				});
 			},
 
 
