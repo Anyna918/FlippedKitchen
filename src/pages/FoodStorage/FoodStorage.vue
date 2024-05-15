@@ -9,7 +9,7 @@
 						<image :src="item.icon" class="card-icon"></image>
 						<div class="card-body">
 							<h3 class="item-name">{{ item.name }}</h3>
-							<p class="item-date">{{ item.purchaseDate }}  保质期:{{ item.dateOfUse }}天</p>
+							<p class="item-date">{{ item.productionDate }}  保质期:{{ item.dateOfUse }}天</p>
 							<p class="item-useRecord">{{ item.useRecord }}</p>							
 						</div>
 						<div class="card-footer">
@@ -47,64 +47,71 @@
 			navigationBar,
 			circleButton,
 		},
+		onLoad() {
+		    // this.userId = 1; // 实际使用中应替换为动态获取的用户ID
+		    this.fetchFoodStorageItems(); // 调用函数加载数据
+		},
+
 		data() {
 			return {
-				foodItems: [{
-						id: 1,
-						name: "面包",
-						purchaseDate: "2024.01.14",
-						icon: "../../static/FoodIcon/bread.png",
-						inCart: [],
-						dateOfUse: 3, // 保质期
-						useRecord: "充足", // 使用记录
-						remark: "快点吃完哦", // 食材备注
-						amount: 5 // 数量
-					},
-					{
-						id: 2,
-						name: "葡萄",
-						purchaseDate: "2024.01.05",
-						icon: "../../static/FoodIcon/grape.png",
-						inCart: [],
-						dateOfUse: 7, // 保质期
-						useRecord: "即将用尽", // 使用记录
-						remark: "阿巴阿巴", // 食材备注
-						amount: 2 // 数量
-					},
-					{
-						id: 3,
-						name: "玉米",
-						purchaseDate: "2024.01.01",
-						icon: "../../static/FoodIcon/popcorn.png",
-						inCart: [],
-						dateOfUse: 7, // 保质期
-						useRecord: "充足", // 使用记录
-						remark: "这是玉米哦", // 食材备注
-						amount: 10 // 数量
-					},
-					{
-						id: 4,
-						name: "草莓",
-						purchaseDate: "2024.01.11",
-						icon: "../../static/FoodIcon/strawberry.png",
-						inCart: [],
-						dateOfUse: 3, // 保质期
-						useRecord: "即将用尽", // 使用记录
-						remark: "这是草莓哦", // 食材备注
-						amount: 2 // 数量
-					},
-					{
-						id: 5,
-						name: "西瓜",
-						purchaseDate: "2024.01.11",
-						icon: "../../static/FoodIcon/watermelon.png",
-						inCart: [],
-						dateOfUse: 3, // 保质期
-						useRecord: "已经用尽", // 使用记录
-						remark: "和草莓一起买的哦", // 食材备注
-						amount: 1 // 数量
-					},
-				],
+				foodItems: [],
+				userId:1,
+				// foodItems: [{
+				// 		id: 1,
+				// 		name: "面包",
+				// 		purchaseDate: "2024.01.14",
+				// 		icon: "../../static/FoodIcon/bread.png",
+				// 		inCart: [],
+				// 		dateOfUse: 3, // 保质期
+				// 		useRecord: "充足", // 使用记录
+				// 		remark: "快点吃完哦", // 食材备注
+				// 		amount: 5 // 数量
+				// 	},
+				// 	{
+				// 		id: 2,
+				// 		name: "葡萄",
+				// 		purchaseDate: "2024.01.05",
+				// 		icon: "../../static/FoodIcon/grape.png",
+				// 		inCart: [],
+				// 		dateOfUse: 7, // 保质期
+				// 		useRecord: "即将用尽", // 使用记录
+				// 		remark: "阿巴阿巴", // 食材备注
+				// 		amount: 2 // 数量
+				// 	},
+				// 	{
+				// 		id: 3,
+				// 		name: "玉米",
+				// 		purchaseDate: "2024.01.01",
+				// 		icon: "../../static/FoodIcon/popcorn.png",
+				// 		inCart: [],
+				// 		dateOfUse: 7, // 保质期
+				// 		useRecord: "充足", // 使用记录
+				// 		remark: "这是玉米哦", // 食材备注
+				// 		amount: 10 // 数量
+				// 	},
+				// 	{
+				// 		id: 4,
+				// 		name: "草莓",
+				// 		purchaseDate: "2024.01.11",
+				// 		icon: "../../static/FoodIcon/strawberry.png",
+				// 		inCart: [],
+				// 		dateOfUse: 3, // 保质期
+				// 		useRecord: "即将用尽", // 使用记录
+				// 		remark: "这是草莓哦", // 食材备注
+				// 		amount: 2 // 数量
+				// 	},
+				// 	{
+				// 		id: 5,
+				// 		name: "西瓜",
+				// 		purchaseDate: "2024.01.11",
+				// 		icon: "../../static/FoodIcon/watermelon.png",
+				// 		inCart: [],
+				// 		dateOfUse: 3, // 保质期
+				// 		useRecord: "已经用尽", // 使用记录
+				// 		remark: "和草莓一起买的哦", // 食材备注
+				// 		amount: 1 // 数量
+				// 	},
+				// ],
 				selectedItem: null,
 				detailVisible: false,
 				shoppingLists: [{
@@ -128,7 +135,61 @@
 				showAddFoodPopup: false,
 			};
 		},
+		
 		methods: {
+			fetchFoodStorageItems() {
+			    uni.request({
+			        url: `/api/foodstorage/getAllFoodStorage?userId=${this.userId}`, // 修改URL和参数以适应你的API
+			        method: 'GET',
+			        success: (res) => {
+			            console.log("Response object:", res.data); // 查看完整的响应对象
+			            if (res.data.code === 200) {
+			                try {
+			                    // 首先确保res.data.data是一个合法的JSON字符串
+			                    const dataObject = JSON.parse(res.data.data);
+			                    if (Array.isArray(dataObject.foodStorages)) {
+			                        this.foodItems = dataObject.foodStorages.map(item => ({
+			                            id: item.storageId,
+			                            amount: item.amount,
+			                            // useRecord: item.userecord,
+			                            useRecord: item.userecord === '1' ? '充足' :
+			                                       item.userecord === '2' ? '即将用尽' :
+			                                       item.userecord === '3' ? '已经用尽' : null,
+
+										dateOfUse: item.dateofuse,
+			                            
+										productionDate:new Date(item.productiondate).toISOString().split('T')[0],
+										remark: item.remark,
+			                            name: item.storageId=== 1 ? '面包' :
+												item.storageId === 2 ? '葡萄' :
+											   item.storageId=== 3 ? '玉米' :
+											   	item.storageId === 4 ? '草莓' :
+											   item.storageId === 5 ? '西瓜' : 
+											   item.storageId === 6 ? '牛奶' :null,
+			                            icon: item.storageId=== 1 ? "../../static/FoodIcon/bread.png" :
+												item.storageId === 2 ? "../../static/FoodIcon/grape.png" :
+											   item.storageId=== 3 ? "../../static/FoodIcon/popcorn.png" :
+											   	item.storageId === 4 ? "../../static/FoodIcon/strawberry.png" :
+											   item.storageId === 5 ? "../../static/FoodIcon/watermelon.png" : null,
+			                            inCart: []
+			                        })).sort((a, b) => new Date(a.productiondate) - new Date(b.productiondate)); // 按生产日期排序
+			                    } else {
+			                        console.error('Expected foodItems to be an array but received:', dataObject.foodStorages);
+			                    }
+			                } catch (e) {
+			                    console.error('Error parsing data:', e);
+			                }
+			            } else {
+			                console.error('Failed to fetch food storage items:', res.data.msg);
+			            }
+			        },
+
+			        fail: (error) => {
+			            console.error('Request failed:', error);
+			        }
+			    });
+			},
+
 			editItem(item) {
 				this.selectedItem = item;
 				this.detailVisible = true;

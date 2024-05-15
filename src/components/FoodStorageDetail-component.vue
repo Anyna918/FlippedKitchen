@@ -8,7 +8,7 @@
 			</div>
 			<div class="food-info" style="margin-top: 10px;">
 				<label>购买日期</label>
-				<p>{{foodItem.purchaseDate}}</p>
+				<p>{{foodItem.productionDate}}</p>
 			</div>
 			<div class="food-info">
 				<label>保质期</label>
