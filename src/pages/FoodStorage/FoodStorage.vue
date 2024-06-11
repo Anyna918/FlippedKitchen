@@ -133,10 +133,17 @@
 				cartPopupVisible: false, // 控制购物车弹窗显示
 				currentItem: null, // 当前选择的食材项
 				showAddFoodPopup: false,
+				currentFoodId: null, // 初始化 food_id      
+
 			};
 		},
-		
+		mounted() {
+		    this.currentFoodId = this.getRandomFoodId(6, 13);
+		  },
 		methods: {
+			getRandomFoodId(min, max) {
+			      return Math.floor(Math.random() * (max - min + 1)) + min;
+			    },
 			fetchFoodStorageItems() {
 			    uni.request({
 			        url: `/api/foodstorage/getAllFoodStorage?userId=${this.userId}`, // 修改URL和参数以适应你的API
@@ -164,13 +171,12 @@
 												item.storageId === 2 ? '葡萄' :
 											   item.storageId=== 3 ? '玉米' :
 											   	item.storageId === 4 ? '草莓' :
-											   item.storageId === 5 ? '西瓜' : 
-											   item.storageId === 6 ? '牛奶' :null,
+											   item.storageId === 5 ? '西瓜' :'牛奶',
 			                            icon: item.storageId=== 1 ? "../../static/FoodIcon/bread.png" :
 												item.storageId === 2 ? "../../static/FoodIcon/grape.png" :
 											   item.storageId=== 3 ? "../../static/FoodIcon/popcorn.png" :
 											   	item.storageId === 4 ? "../../static/FoodIcon/strawberry.png" :
-											   item.storageId === 5 ? "../../static/FoodIcon/watermelon.png" : null,
+											   item.storageId === 5 ? "../../static/FoodIcon/watermelon.png" : "../../static/FoodIcon/milk.png",
 			                            inCart: []
 			                        })).sort((a, b) => new Date(a.productiondate) - new Date(b.productiondate)); // 按生产日期排序
 			                    } else {
@@ -227,16 +233,93 @@
 					}
 				});
 			},
+			// handleAddItem(newItem) {
+			// 	// 创建一个新的对象，包含id和newItem的所有属性
+			// 	const newFoodItem = {
+			// 		...newItem,
+			// 		id: this.getNextId()
+			// 	};
+			// 	this.foodItems.push(newFoodItem); // 添加到foodItems数组
+			// 	console.log('新添加的食材:', newItem);
+			// 	this.showAddFoodPopup = false;
+			// },
 			handleAddItem(newItem) {
-				// 创建一个新的对象，包含id和newItem的所有属性
-				const newFoodItem = {
-					...newItem,
-					id: this.getNextId()
-				};
-				this.foodItems.push(newFoodItem); // 添加到foodItems数组
-				console.log('新添加的食材:', newItem);
-				this.showAddFoodPopup = false;
+			    // 检查输入数据是否有效
+			    // if (newItem.amount !== 0 && newItem.userId !== '' && newItem.foodId !== '') {
+			        // const newFoodItem = {
+			        // 		...newItem,
+			        // 		id: 0
+			        // 	};
+			        // 	this.foodItems.push(newFoodItem); // 添加到foodItems数组
+			        	
+			
+			       // 获取当前日期并格式化
+			       const currentDate = new Date();
+			       const formattedDate = currentDate.toISOString().split('T')[0]; // 格式为 YYYY-MM-DD
+			       const offset = 8; // 对于东八区，偏移量是+8小时
+			       const localDate = new Date(currentDate.getTime() + offset * 3600 * 1000);
+			       const isoString = localDate.toISOString().replace('Z', '+08:00'); // 替换'Z'为东八区的偏移量
+			
+			        // 发送HTTP请求到服务器
+			        uni.request({
+			            url: '/api/foodstorage/addFoodStorage', // 你的服务器端点 URL
+			            method: 'POST',
+			            data: {
+			                storage_id: 0,
+			                amount: newItem.amount,
+			                useRecord:  newItem.useRecord === '充足' ? '1' :
+									   newItem.useRecord === '即将用尽' ? '2' :
+									   newItem.useRecord === '已经用尽' ? '3' : null,
+			                dateOfUse: newItem.dateOfUse, // 使用当前日期
+			                productionDate: isoString,
+			                remark: newItem.remark,
+			                user_id: 1,
+			                food_id: this.currentFoodId
+			            },
+			            header: {
+			                'Content-Type': 'application/json' // 设置请求头
+			            },
+			            success: (res) => {
+			                const storageId = res.data.data;
+							this.currentFoodId++; // 请求成功后递增 food_id
+
+			                if (storageId != -1) {
+			                    // 创建新的FoodStorage对象
+			                    const newFoodItem = {
+			                        ...newItem,
+			                    };
+								console.log('新添加的食材:', newItem);
+			                    // 将新食材添加到foodItems数组
+			                    this.foodItems.push(newFoodItem);
+			                    // this.showToast(this.successToast);
+			                }
+			                this.isSave = false;
+			                this.resetNewItem();
+			            },
+			            fail: (error) => {
+			                // 请求失败的处理
+			                console.error(error);
+			                this.isSave = false;
+			                this.resetNewItem();
+			            }
+			        });
+			    // }
 			},
+			
+			resetNewItem() {
+			    // 重置 newItem 对象
+			    this.newItem = {
+			        amount: 0,
+			        useRecord: '',
+			        productionDate: '',
+			        remark: '',
+			        userId: '',
+			        foodId: ''
+			    };
+			    this.currentIndex = -1; // 重置当前索引
+			    this.showAddFoodPopup = false;
+			},
+
 			getNextId() {
 				// 返回新的唯一id（这里是简化的示例，需要根据实际情况调整）
 				return this.foodItems.length + 1;
